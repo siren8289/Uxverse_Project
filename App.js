@@ -1,18 +1,14 @@
 // App.js
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { View, StyleSheet, Text } from "react-native";
-import TopBar from "./src/components/TopBar_1"; // 네비게이션 바
-// 새로운 컴포넌트를 여기서 추가할 수도 있음
+import { View, StyleSheet } from "react-native";
+import ButtonRegister from "./src/components/Button_Register"; // 경로는 실제 위치에 맞게 조정
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
-        <TopBar />
-        <View style={styles.content}>
-          <Text style={styles.text}>여기는 메인 콘텐츠 영역입니다.</Text>
-        </View>
+        <ButtonRegister />
       </View>
     </SafeAreaProvider>
   );
@@ -22,14 +18,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  content: {
-    flex: 1,
-    justifyContent: "center",
+    justifyContent: "center", // 화면 가운데에 배치
     alignItems: "center",
-  },
-  text: {
-    fontSize: 18,
-    color: "#333",
   },
 });
