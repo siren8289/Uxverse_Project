@@ -1,19 +1,47 @@
-import * as React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleProp,
+  ViewStyle,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const SubmitButton = () => {
+const SubmitButton = ({
+  onPress,
+  isLoading = false,
+  disabled = false,
+  text = "등록하기",
+  style,
+}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <View style={[styles.buttonContainer, styles.buttonSize]}>
+        <TouchableOpacity
+          onPress={onPress}
+          disabled={disabled || isLoading}
+          activeOpacity={0.8}
+          style={[styles.buttonContainer, styles.buttonSize, style]}
+        >
           <View style={[styles.buttonBackground, styles.buttonSize]}>
-            <View style={styles.buttonFill} />
+            <View
+              style={[
+                styles.buttonFill,
+                { backgroundColor: disabled ? "#aaa" : "#FF736D" },
+              ]}
+            />
           </View>
           <View style={styles.textWrapper}>
-            <Text style={styles.buttonText}>등록하기</Text>
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#FBFBFB" />
+            ) : (
+              <Text style={styles.buttonText}>{text}</Text>
+            )}
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -24,12 +52,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    width: 390, // 아이폰 기준 전체 너비
+    width: 390,
     flex: 1,
+    alignItems: "center", // 가운데 정렬
+    justifyContent: "center",
   },
   buttonContainer: {
-    paddingHorizontal: 130, // 기존 130 → 일반적인 버튼 마진
-    paddingVertical: 20, // 22 → 정돈된 여백
+    paddingHorizontal: 130,
+    paddingVertical: 20,
     gap: 10,
   },
   buttonSize: {
@@ -48,10 +78,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
-    width: 350,
-    height: 62,
     borderRadius: 100,
-    backgroundColor: "#FF736D",
   },
   textWrapper: {
     width: 90,

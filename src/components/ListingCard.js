@@ -1,63 +1,84 @@
-import * as React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import BookmarkIcon from "./assets/Frame.svg";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
+import BookmarkIcon from "./assets/Frame.svg"; // 빈 찜 아이콘
+import FilledBookmarkIcon from "./assets/Heart.svg"; // 채운 찜 아이콘
 
-const ProductCard = () => {
+const ProductCard = ({
+  imageSource = null,
+  price = "가격 없음",
+  title = "상품명 없음",
+  location = "위치 정보 없음",
+  onPress = () => {},
+}) => {
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  const toggleBookmark = () => {
+    setIsBookmarked(!isBookmarked);
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.card}>
-        {/* <Image
+    <Pressable style={styles.card} onPress={onPress}>
+      {/* 이미지 영역 */}
+      {imageSource ? (
+        <Image
+          source={imageSource}
           style={styles.productImage}
           resizeMode="cover"
-          source={require("../assets/home little.png")}
-        /> */}
-
-        {/* <BookmarkIcon width={40} height={40} /> */}
-
+        />
+      ) : (
         <View style={styles.imagePlaceholder}>
-          <Text style={{ color: "#999" }}>이미지 자리</Text>
-          <BookmarkIcon style={styles.bookmarkIcon} width={24} height={24} />
+          <Text style={{ color: "#999" }}>이미지 없음</Text>
         </View>
+      )}
 
-        <View style={styles.textBox}>
-          <Text style={styles.price}>7,000원</Text>
-          <Text style={styles.title}>캠핑용 조명 렌턴</Text>
-          <Text style={styles.location}>서울시 관악구·1시간 전</Text>
-        </View>
+      {/* 북마크 아이콘 */}
+      <TouchableOpacity onPress={toggleBookmark} style={styles.bookmarkIcon}>
+        {isBookmarked ? (
+          <FilledBookmarkIcon width={24} height={24} />
+        ) : (
+          <BookmarkIcon width={24} height={24} />
+        )}
+      </TouchableOpacity>
+
+      {/* 텍스트 정보 */}
+      <View style={styles.textBox}>
+        <Text style={styles.price}>{price}</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.location}>{location}</Text>
       </View>
-    </SafeAreaView>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   card: {
     height: 186,
     width: "100%",
-    flex: 1,
+    position: "relative",
+    backgroundColor: "#fff",
   },
-  // productImage: {
-  //   height: "64.19%",
-  //   width: "100%",
-  //   position: "absolute",
-  //   top: 0,
-  // },
-  bookmarkIcon: {
-    position: "absolute", // 위치를 고정시키기 위해 필요
-    top: 8, // 위에서 8px 떨어지게
-    right: 8, // 오른쪽에서 8px 떨어지게
-    width: 18, // 너가 원한 아이콘 크기
-    height: 18,
-    zIndex: 10, // 위에 보이도록
+  productImage: {
+    height: "64.19%",
+    width: "100%",
   },
   imagePlaceholder: {
     height: "64.19%",
     backgroundColor: "#eee",
     justifyContent: "center",
     alignItems: "center",
+  },
+  bookmarkIcon: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    zIndex: 10,
   },
   textBox: {
     position: "absolute",
