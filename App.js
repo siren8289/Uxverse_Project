@@ -1,57 +1,22 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import CustomTabBar from "./src/components/Nav";
-
-// 화면 컴포넌트들 (간단한 예시용)
-import { View, Text } from "react-native";
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>홈 화면</Text>
-    </View>
-  );
-}
-
-function SearchScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>검색 화면</Text>
-    </View>
-  );
-}
-
-function LikeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>좋아요 화면</Text>
-    </View>
-  );
-}
-
-function MypageScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>마이페이지 화면</Text>
-    </View>
-  );
-}
-
-const Tab = createBottomTabNavigator();
+import { SafeAreaView, ScrollView } from "react-native";
+import ListingCard from "./src/components/ListingCard"; // 경로 확인 필수
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{ headerShown: false }}
-        tabBar={(props) => <CustomTabBar {...props} />}
-      >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Search" component={SearchScreen} />
-        <Tab.Screen name="Like" component={LikeScreen} />
-        <Tab.Screen name="Mypage" component={MypageScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <ListingCard
+          price="7,000원"
+          title="캠핑용 조명 랜턴"
+          location="서울 마포구"
+        />
+        <ListingCard
+          price="12,000원"
+          title="접이식 캠핑 체어"
+          location="부산 해운대구"
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 }

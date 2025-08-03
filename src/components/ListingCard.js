@@ -59,34 +59,45 @@ const ProductCard = ({
 
 const styles = StyleSheet.create({
   card: {
-    height: 186,
-    width: "100%",
-    position: "relative",
+    width: 119.36,
+    height: 220, // 119.36 이미지 + 여유 텍스트 영역
+    borderRadius: 10,
     backgroundColor: "#fff",
+    position: "relative",
+    overflow: "hidden",
   },
+
   productImage: {
-    height: "64.19%",
-    width: "100%",
+    width: 119.36,
+    height: 119.36,
+    borderRadius: 10,
   },
+
   imagePlaceholder: {
-    height: "64.19%",
+    width: 119.36,
+    height: 119.36,
     backgroundColor: "#eee",
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 10,
+    overflow: "hidden",
   },
+
   bookmarkIcon: {
     position: "absolute",
     top: 8,
     right: 8,
     zIndex: 10,
   },
+
   textBox: {
     position: "absolute",
-    top: "69.89%",
-    width: "100%",
-    gap: 6,
-    paddingHorizontal: 16,
+    top: 130, // 이미지 아래 119.36 + 간격 약간
+    width: 119.36,
+    gap: 4,
+    paddingHorizontal: 4,
   },
+
   price: {
     fontSize: 16,
     color: "#1b1b1b",
@@ -94,19 +105,21 @@ const styles = StyleSheet.create({
     fontFamily: "NotoSansKR-Medium",
     lineHeight: 24,
   },
+
   title: {
     fontSize: 14,
     color: "#1b1b1b",
     fontWeight: "500",
     fontFamily: "NotoSansKR-Medium",
-    lineHeight: 24,
+    lineHeight: 20,
   },
+
   location: {
     fontSize: 12,
     color: "#5a5a5a",
     fontWeight: "500",
     fontFamily: "NotoSansKR-Medium",
-    lineHeight: 24,
+    lineHeight: 18,
   },
 });
 
