@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
+import PopularIcon from "./assets/Popular.svg";
 
 const PINK = "#FF736D";
 const TEXT_DARK = "#1A1A1A";
@@ -111,18 +112,17 @@ function Chips({ activeIndex = 1, onSelect = () => { } }) {
             onPress={() => onSelect(i)}
             style={[
               styles.categoryBtn,
-              isActive ? styles.activeBtn : (isPopular && styles.popularBtn),
+              isActive ? styles.categoryBtnActiveOutline : (isPopular && styles.popularBtn),
             ]}
           >
             {isPopular && (
-              <View style={styles.rankBadge}>
-                <Text style={styles.rankText}>1↑</Text>
-              </View>
+              <PopularIcon width={20} height={20} style={styles.rankIcon} />
             )}
+
             <Text
               style={[
                 styles.categoryText,
-                isActive ? styles.activeText : (isPopular && styles.popularText),
+                isActive ? styles.categoryTextActiveOutline : (isPopular && styles.popularText),
               ]}
             >
               {cat}
@@ -275,6 +275,11 @@ const styles = StyleSheet.create({
   titleText: { marginTop: 4, fontSize: 13, color: "#2B2B2B", fontWeight: "600" },
   remainText: { marginTop: 2, fontSize: 12, color: "#8B8B8B" },
 
+  rankIcon: {
+    marginRight: 8,
+    alignSelf: "center",
+  },
+
   /* ── Floating “제안하기” (하단 고정) ───────────── */
   fab: {
     position: "absolute",
@@ -293,6 +298,15 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   fabText: { color: "#fff", fontWeight: "700", fontSize: 12 },
+  categoryBtnActiveOutline: {
+    backgroundColor: "#fff",
+    borderColor: PINK,
+    borderWidth: 1.5,
+  },
+  categoryTextActiveOutline: {
+    color: PINK,
+    fontWeight: "700",
+  },
 });
 
 export default GroupPurchase;
