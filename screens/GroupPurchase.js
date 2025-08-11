@@ -1,5 +1,4 @@
-// screens/GroupPurchase.js
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -13,7 +12,7 @@ import {
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 
-const PINK = "#F06C77";
+const PINK = "#FF736D";
 const TEXT_DARK = "#1A1A1A";
 const CHIP_BORDER = "#EDEDEF";
 const CHIP_TEXT = "#2B2B2B";
@@ -41,7 +40,8 @@ const products = [
 
 export function GroupPurchase() {
   const tabBarHeight = useBottomTabBarHeight();
-  const GAP = 4; // ← 원본처럼 탭바와 거의 붙는 간격
+  const GAP = 4;
+  const [activeCat, setActiveCat] = React.useState(1); // 기본: 식품
 
   return (
     <SafeAreaView style={styles.container}>
@@ -65,7 +65,7 @@ export function GroupPurchase() {
           </TouchableOpacity>
         </View>
       </View>
-
+      <Chips activeIndex={activeCat} onSelect={setActiveCat} />
 
       {/* 상품 그리드 + 칩을 헤더로(한 줄만 렌더되게) */}
       <FlatList
@@ -75,7 +75,6 @@ export function GroupPurchase() {
         columnWrapperStyle={{ justifyContent: "space-between", marginBottom: 22 }}
         // ⬇️ 탭바·FAB를 가리지 않도록 동적 패딩
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: tabBarHeight + 96 }}
-        ListHeaderComponent={<Chips />}
         renderItem={({ item }) => (
           <Card
             image={item.image}
@@ -96,7 +95,7 @@ export function GroupPurchase() {
 }
 
 /* 카테고리 칩 – 원본 톤 */
-function Chips() {
+function Chips({ activeIndex = 1, onSelect = () => { } }) {
   return (
     <ScrollView
       horizontal
@@ -105,14 +104,14 @@ function Chips() {
     >
       {categories.map((cat, i) => {
         const isPopular = i === 0; // 인기순
-        const isActive = i === 1;  // 식품
+        const isActive = i === activeIndex;
         return (
           <TouchableOpacity
             key={cat}
+            onPress={() => onSelect(i)}
             style={[
               styles.categoryBtn,
-              isPopular && styles.popularBtn,
-              isActive && styles.activeBtn,
+              isActive ? styles.activeBtn : (isPopular && styles.popularBtn),
             ]}
           >
             {isPopular && (
@@ -123,8 +122,7 @@ function Chips() {
             <Text
               style={[
                 styles.categoryText,
-                isPopular && styles.popularText,
-                isActive && styles.activeText,
+                isActive ? styles.activeText : (isPopular && styles.popularText),
               ]}
             >
               {cat}
@@ -163,8 +161,8 @@ const styles = StyleSheet.create({
 
   /* ── Topbar (원본처럼 중앙 정렬) ───────────────── */
   topbar: {
-    height: 68,          // 56 → 68
-    paddingTop: 10,      // 살짝 아래로
+    height: 62,          // 56 → 68
+    paddingTop: 6,      // 살짝 아래로
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 12,
@@ -204,7 +202,8 @@ const styles = StyleSheet.create({
   categoryScroll: {
     paddingHorizontal: 16,
     paddingVertical: 10,
-    marginTop: 4,        // 제목과 간격 유지
+    marginTop: 2,        // 제목과 간격 유지
+    paddingBottom: 30,
   },
 
   categoryBtn: {
@@ -295,6 +294,5 @@ const styles = StyleSheet.create({
   },
   fabText: { color: "#fff", fontWeight: "700", fontSize: 12 },
 });
-
 
 export default GroupPurchase;
