@@ -8,7 +8,7 @@ const FontFamily = {
 };
 /* Font sizes */
 const FontSize = {
-  size_12: 12,
+  size_12: 11,
 };
 /* Colors */
 const Color = {
@@ -22,10 +22,11 @@ const Group123219 = () => {
       {/* 안내 문구 영역 */}
       <View style={styles.content}>
         <Text style={styles.p}>
-          본인 연락처, 계좌번호 등 개인정보 입력 시 등록이 제한될 수 있어요.
+          {"\u2022"} 본인 연락처, 계좌번호 등 개인정보 입력 시 등록이 제한될 수 있어요.
+          {/*  {"\u2022"} : bullet(•) 기호의 유니코드 */}
         </Text>
         <Text style={styles.p}>
-          거래 목적 외의 링크, 광고 문구 등은 삭제될 수 있어요.
+          {"\u2022"} 거래 목적 외의 링크, 광고 문구 등은 삭제될 수 있어요.
         </Text>
       </View>
 
@@ -40,7 +41,7 @@ const Group123219 = () => {
 const styles = StyleSheet.create({
   box: {
     width: 350,
-    minHeight: 150, // 시안에 맞게 높이 고정하려면 height: 150
+    minHeight: 135, // 시안에 맞게 높이 고정하려면 height: 150
     borderRadius: 10,
     backgroundColor: Color.colorGainsboro,
     paddingHorizontal: 16,
