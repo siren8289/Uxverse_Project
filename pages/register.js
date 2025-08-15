@@ -16,11 +16,14 @@ import IconCheck3 from "../assets/vector2.svg";
 import IconMarker from "../assets/vector-456.svg";
 import IconPackage from "../assets/vector-457.svg";
 
+import DescriptionBox from "./components/DescriptionBox";
+
 const FontFamily = {
-  notoSansMedium: "NotoSans-Medium",
-  notoSansKRMedium: "NotoSansKR-Medium",
+  notoSansMedium: "NotoSansMedium",
+  notoSansKRMedium: "NotoSansKRMedium",
   sFPro: "SF Pro",
 };
+
 const FontSize = {
   size_10: 10,
   size_12: 12,
@@ -69,7 +72,7 @@ const Register = () => {
         {/* 헤더 */}
         <Text style={[styles.text, styles.textTypo5]}>렌탈/공유 등록하기</Text>
         <IconBackArrow style={[styles.frameIcon, styles.frameIconPosition]} />
-        
+
         {/* 이미지 업로드 영역 */}
         <View style={styles.inner}>
           <View style={styles.instanceChild} />
@@ -89,17 +92,8 @@ const Register = () => {
 
         {/* 설명 */}
         <Text style={[styles.text4, styles.textTypo5]}>설명</Text>
-        <View style={styles.rectangleParent}>
-          <View style={styles.instanceItem} />
-          <View style={[styles.container, styles.timeFlexBox]}>
-            <Text style={[styles.text5, styles.textTypo4]}>0/2000</Text>
-          </View>
-          <Text style={[styles.text6, styles.textTypo6]}>
-            본인 연락처, 계좌번호 등 개인정보 입력 시 등록이 제한될 수 있어요.
-          </Text>
-          <Text style={[styles.text7, styles.textTypo6]}>
-            거래 목적 외의 링크, 광고 문구 등은 삭제될 수 있어요.
-          </Text>
+        <View style={{ position: "absolute", top: 388, left: 20, width: 350, height: 150 }}>
+          <DescriptionBox />
         </View>
 
         {/* 가격 */}
@@ -120,10 +114,10 @@ const Register = () => {
         <IconEllipse style={styles.ellipseIcon} width={18} height={18} />
         <IconCheck1 style={[styles.vectorIcon, styles.frameIconPosition]} />
         <Text style={[styles.text13, styles.textTypo]}>직거래</Text>
-        <Text style={[styles.text14, styles.textTypo]}>+ 지역설정</Text>
         <IconCheck2 style={[styles.vectorIcon1, styles.vectorIconLayout]} />
         <Text style={[styles.text15, styles.textTypo2]}>편의점 픽업</Text>
         <IconCheck3 style={[styles.vectorIcon2, styles.vectorIconLayout]} />
+        <Text style={[styles.text14, styles.textTypo]}>+ 지역설정</Text>
         <Text style={[styles.text16, styles.textTypo6]}>+ 지역설정</Text>
 
         {/* 등록 버튼 */}
@@ -150,527 +144,179 @@ const Register = () => {
 };
 
 const styles = StyleSheet.create({
-    register: {
-        backgroundColor: Color.colorGray100,
-        flex: 1
+  register: { 
+        backgroundColor: Color.colorGray100, 
+        flex: 1 
     },
-    homeIndicatorPosition: {
-        width: 390,
-        left: 0,
-        position: "absolute"
+  homeIndicatorPosition: { 
+        width: 390, 
+        left: 0, 
+        position: "absolute" 
     },
-    timeFlexBox: {
+  timeFlexBox: { 
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center" 
     },
-    child1Layout: {
-        width: 21,
-        position: "absolute"
+  child1Layout: { 
+        width: 21, 
+        position: "absolute" 
     },
-    textTypo5: {
-        color: Color.colorDimgray,
+  textTypo5: {
+        color: Color.colorDimgray, 
         textAlign: "left",
-        fontFamily: FontFamily.notoSansKRMedium,
+        fontFamily: FontFamily.notoSansKRMedium, 
         fontWeight: "500",
-        lineHeight: 24,
-        fontSize: FontSize.size_16,
-        position: "absolute"
+        lineHeight: 24, 
+        fontSize: FontSize.size_16, 
+        position: "absolute",
     },
-    frameIconPosition: {
+  frameIconPosition: { 
         overflow: "hidden",
-        position: "absolute"
+        position: "absolute" 
     },
-    textTypo3: {
-        color: Color.colorGainsboro,
-        textAlign: "left",
-        fontWeight: "500",
-        lineHeight: 24
+  textTypo3: { 
+        color: Color.colorGainsboro, 
+        textAlign: "left", 
+        fontWeight: "500", 
+        lineHeight: 24 
     },
-    itemLayout: {
-        width: 349,
-        left: 20,
-        maxHeight: "100%",
-        position: "absolute"
+  itemLayout: { 
+        width: 349, 
+        left: 20, 
+        maxHeight: "100%", 
+        position: "absolute" 
     },
-    textTypo4: {
-        fontFamily: FontFamily.notoSansMedium,
-        fontSize: FontSize.size_10
+  textTypo6: { 
+        fontWeight: "500", 
+        lineHeight: 24 
     },
-    textTypo6: {
-        fontWeight: "500",
-        lineHeight: 24
+  textTypo2: { 
+        fontSize: FontSize.size_14, 
+        left: 53, 
+        color: Color.colorDimgray 
     },
-    textTypo2: {
-        fontSize: FontSize.size_14,
-        left: 53,
-        color: Color.colorDimgray
+  textTypo1: { 
+        color: Color.colorGray100, 
+        fontFamily: FontFamily.notoSansKRMedium, 
+        fontWeight: "500", 
+        lineHeight: 24 
     },
-    textTypo1: {
-        color: Color.colorGray100,
-        fontFamily: FontFamily.notoSansKRMedium,
-        fontWeight: "500",
-        lineHeight: 24
+  rectangleLayout: { 
+        height: 30, 
+        position: "absolute" 
     },
-    rectangleLayout: {
-        height: 30,
-        position: "absolute"
-    },
-    instanceBorder: {
-        borderColor: Color.colorSalmon,
-        borderRadius: Border.br_100,
+  instanceBorder: {
+        borderColor: Color.colorSalmon, 
+        borderRadius: Border.br_100, 
         borderWidth: 0.8,
-        borderStyle: "solid",
-        bottom: "0%",
-        top: "0%",
+        borderStyle: "solid", 
+        bottom: "0%", 
+        top: "0%", 
         height: "100%",
-        position: "absolute"
+        position: "absolute",
     },
-    textTypo: {
-        top: 699,
-        textAlign: "left",
+  textTypo: {
+        top: 699, 
+        textAlign: "left", 
         fontFamily: FontFamily.notoSansKRMedium,
-        fontWeight: "500",
-        lineHeight: 24,
-        position: "absolute"
+        fontWeight: "500", 
+        lineHeight: 24, 
+        position: "absolute",
     },
-    vectorIconLayout: {
-        width: "4.62%",
-        height: "2.02%",
+  vectorIconLayout: {
+        width: "4.62%", 
+        height: "2.02%", 
         overflow: "hidden",
-        maxWidth: "100%",
-        maxHeight: "100%",
-        position: "absolute"
-    },
-    view1Layout: {
-        height: 62,
-        width: 350,
-        position: "absolute"
-    },
-    bigButtonChildLayout: {
-        borderRadius: Border.br_100,
-        position: "absolute"
-    },
-    time1: {
-        fontSize: 17,
-        lineHeight: 22,
-        fontWeight: "600",
-        fontFamily: FontFamily.sFPro,
-        color: Color.colorBlack,
-        textAlign: "center"
-    },
-    time: {
-        paddingLeft: Padding.p_16,
-        paddingRight: Padding.p_6,
-        flexDirection: "row",
-        justifyContent: "center",
-        flex: 1
-    },
-    dynamicIslandSpacer: {
-        width: 124,
-        height: 10
-    },
-    cellularConnectionIcon: {
-        width: 19,
-        height: 12
-    },
-    wifiIcon: {
-        width: 17,
-        height: 12
-    },
-    border: {
-        marginLeft: -13.65,
-        borderRadius: 4,
-        borderColor: Color.colorBlack,
-        width: 25,
-        opacity: 0.35,
-        borderWidth: 1,
-        borderStyle: "solid",
-        left: "50%",
-        bottom: "0%",
-        top: "0%",
-        height: "100%",
-        position: "absolute"
-    },
-    capIcon: {
-        height: "31.54%",
-        marginLeft: 12.35,
-        top: "36.78%",
-        bottom: "31.68%",
-        width: 1,
-        opacity: 0.4,
-        maxHeight: "100%",
-        left: "50%",
-        position: "absolute"
-    },
-    capacity: {
-        height: "69.23%",
-        marginLeft: -11.65,
-        top: "15.38%",
-        bottom: "15.38%",
-        borderRadius: 3,
-        backgroundColor: Color.colorBlack,
-        left: "50%"
-    },
-    battery: {
-        height: 13,
-        width: 27
-    },
-    levels: {
-        paddingLeft: Padding.p_6,
-        paddingRight: Padding.p_16,
-        gap: 7,
-        flexDirection: "row",
-        justifyContent: "center",
-        flex: 1
-    },
-    frame: {
-        alignSelf: "stretch",
-        justifyContent: "space-between",
-        gap: 0,
-        alignItems: "center",
-        flexDirection: "row"
-    },
-    statusBarIphone: {
-        height: 50,
-        paddingTop: 21,
-        top: 0,
-        width: 390
-    },
-    text: {
-        top: 67,
-        left: 131,
-        textAlign: "left"
-    },
-    frameIcon: {
-        height: "2.85%",
-        width: "6.15%",
-        top: "7.82%",
-        right: "88.72%",
-        bottom: "89.33%",
-        maxWidth: "100%",
-        overflow: "hidden",
-        maxHeight: "100%",
-        left: "5.13%"
-    },
-    instanceChild: {
-        borderWidth: 0.8,
-        borderColor: Color.colorGainsboro,
-        borderRadius: Border.br_10,
-        left: "0%",
-        right: "0%",
-        borderStyle: "solid",
-        bottom: "0%",
-        top: "0%",
-        height: "100%",
+        maxWidth: "100%", 
+        maxHeight: "100%", 
         position: "absolute",
-        width: "100%"
     },
-    inner: {
-        top: 118,
-        width: 92,
-        height: 87,
-        left: 20,
-        position: "absolute"
-    },
-    frameIcon1: {
-        top: 138,
-        left: 48,
-        width: 36,
-        height: 36
-    },
-    text1: {
-        width: 22,
-        fontFamily: FontFamily.notoSansMedium,
-        fontSize: FontSize.size_10
-    },
-    wrapper: {
-        top: 175,
-        left: 49,
-        width: 35,
-        height: 13,
-        position: "absolute"
-    },
-    text2: {
-        top: 229,
-        left: 20,
-        fontFamily: FontFamily.notoSansKRMedium,
-        fontSize: FontSize.size_16,
-        color: Color.colorGainsboro,
-        position: "absolute"
-    },
-    child: {
-        top: 261
-    },
-    text3: {
-        top: 285,
-        left: 20,
-        fontFamily: FontFamily.notoSansKRMedium,
-        fontSize: FontSize.size_16,
-        color: Color.colorGainsboro,
-        position: "absolute"
-    },
-    item: {
-        top: 317
-    },
-    text4: {
-        top: 349,
-        left: 20,
-        textAlign: "left"
-    },
-    instanceItem: {
-        backgroundColor: Color.colorGainsboro,
-        borderColor: Color.colorGainsboro,
-        borderRadius: Border.br_10,
-        left: "0%",
-        right: "0%",
-        borderWidth: 1,
-        borderStyle: "solid",
-        bottom: "0%",
-        top: "0%",
-        height: "100%",
-        position: "absolute",
-        width: "100%"
-    },
-    text5: {
-        width: 34,
-        color: Color.colorGray200,
-        textAlign: "left",
-        fontWeight: "500",
-        lineHeight: 24
-    },
-    container: {
-        height: "6.3%",
-        width: "9.71%",
-        top: "87.4%",
-        right: "4.76%",
-        bottom: "6.3%",
-        left: "85.52%",
-        position: "absolute"
-    },
-    text6: {
-        height: "37.8%",
-        width: "90.57%",
-        top: "14.08%",
-        left: "4.52%",
-        fontSize: FontSize.size_12,
-        color: Color.colorGray200,
-        textAlign: "left",
-        fontFamily: FontFamily.notoSansKRMedium,
-        position: "absolute"
-    },
-    text7: {
-        width: "90.49%",
-        top: "58.27%",
-        left: "4.57%",
-        fontSize: FontSize.size_12,
-        color: Color.colorGray200,
-        textAlign: "left",
-        fontFamily: FontFamily.notoSansKRMedium,
-        position: "absolute"
-    },
-    rectangleParent: {
-        top: 388,
-        height: 127,
-        width: 350,
-        left: 20,
-        position: "absolute"
-    },
-    text8: {
-        top: 555,
-        left: 20,
-        fontFamily: FontFamily.notoSansKRMedium,
-        fontSize: FontSize.size_16,
-        color: Color.colorGainsboro,
-        position: "absolute"
-    },
-    lineIcon: {
-        top: 587
-    },
-    text9: {
-        top: 619,
-        left: 20,
-        textAlign: "left"
-    },
-    text10: {
-        top: 659,
-        textAlign: "left",
-        position: "absolute",
-        fontFamily: FontFamily.notoSansKRMedium,
-        fontWeight: "500",
-        lineHeight: 24
-    },
-    text11: {
-        left: 289,
-        top: 659,
-        textAlign: "left",
-        position: "absolute",
-        fontSize: FontSize.size_10,
-        color: Color.colorGray100
-    },
-    instanceInner: {
-        width: "96.08%",
-        right: "0.08%",
-        left: "3.85%",
-        backgroundColor: Color.colorSalmon
-    },
-    rectangleView: {
-        left: 279,
-        width: 51,
-        top: 652,
-        height: 30
-    },
-    instanceChild1: {
-        left: "0%",
-        right: "0%",
-        width: "100%"
-    },
-    text12: {
-        width: "46.08%",
-        top: "10%",
-        left: "27.45%",
-        color: Color.colorSalmon,
-        fontSize: FontSize.size_12,
-        fontFamily: FontFamily.notoSansKRMedium,
-        textAlign: "center",
-        position: "absolute"
-    },
-    rectangleGroup: {
-        left: 334,
-        width: 51,
-        top: 652,
-        height: 30
-    },
-    ellipseIcon: {
-        top: 662,
-        width: 18,
-        height: 18,
-        left: 20,
-        position: "absolute"
-    },
-    vectorIcon: {
-        height: "0.74%",
-        width: "2.46%",
-        top: "74.55%",
-        right: "91.14%",
-        bottom: "24.72%",
-        left: "6.4%",
-        maxWidth: "100%",
-        overflow: "hidden",
-        maxHeight: "100%"
-    },
-    text13: {
-        fontSize: FontSize.size_14,
-        left: 53,
-        color: Color.colorDimgray
-    },
-    text14: {
-        left: 315,
-        fontSize: FontSize.size_12,
-        color: Color.colorGray200
-    },
-    vectorIcon1: {
-        top: "78.34%",
-        right: "90.16%",
-        bottom: "19.64%",
-        left: "5.23%"
-    },
-    text15: {
-        top: 739,
-        textAlign: "left",
-        fontFamily: FontFamily.notoSansKRMedium,
-        fontWeight: "500",
-        lineHeight: 24,
-        position: "absolute"
-    },
-    vectorIcon2: {
-        top: "82.81%",
-        right: "90.26%",
-        bottom: "15.17%",
-        left: "5.13%"
-    },
-    text16: {
-        top: 742,
-        left: 316,
-        fontSize: FontSize.size_12,
-        color: Color.colorGray200,
-        textAlign: "left",
-        fontFamily: FontFamily.notoSansKRMedium,
-        position: "absolute"
-    },
-    bigButtonChild: {
-        backgroundColor: Color.colorSalmon,
-        left: "0%",
-        right: "0%",
-        width: "100%",
-        bottom: "0%",
-        top: "0%",
-        height: "100%",
-        borderRadius: Border.br_100
-    },
-    bigButton: {
-        zIndex: 0,
-        left: 0,
-        height: 62,
-        top: 0
-    },
-    text17: {
-        fontSize: 20,
-        textAlign: "left"
-    },
-    frameView: {
-        width: 90,
-        zIndex: 1,
-        height: 18,
-        flexDirection: "row",
-        justifyContent: "center"
-    },
-    view1: {
-        top: 798,
-        paddingHorizontal: 130,
-        paddingVertical: 22,
-        gap: 10,
-        left: 20
-    },
-    homeIndicator1: {
-        marginLeft: 72,
-        bottom: 8,
-        width: 144,
-        height: 5,
-        transform: [
-            {
-                rotate: "180deg"
-            }
-        ],
-        backgroundColor: Color.colorBlack,
-        left: "50%"
-    },
-    homeIndicator: {
-        top: 862,
-        height: 34
-    },
-    text18: {
-        top: 655,
-        left: 293,
-        fontSize: FontSize.size_12,
-        textAlign: "center",
-        position: "absolute"
-    },
-    child1: {
-        top: 736,
-        left: 155,
-        height: 21
-    },
-    child2: {
-        top: 729,
-        left: 160,
-        width: 27
-    },
-    view: {
-        height: 896,
-        width: "100%",
-        backgroundColor: Color.colorGray100,
-        flex: 1
-    }
+  view1Layout: { height: 62, width: 350, position: "absolute" },
+  bigButtonChildLayout: { borderRadius: Border.br_100, position: "absolute" },
+
+  time1: { fontSize: 17, lineHeight: 22, fontWeight: "600", fontFamily: FontFamily.sFPro, color: Color.colorBlack, textAlign: "center" },
+  time: { paddingLeft: Padding.p_16, paddingRight: Padding.p_6, flexDirection: "row", justifyContent: "center", flex: 1 },
+  dynamicIslandSpacer: { width: 124, height: 10 },
+  cellularConnectionIcon: { width: 19, height: 12 },
+  wifiIcon: { width: 17, height: 12 },
+  border: {
+    marginLeft: -13.65, borderRadius: 4, borderColor: Color.colorBlack, width: 25, opacity: 0.35,
+    borderWidth: 1, borderStyle: "solid", left: "50%", bottom: "0%", top: "0%", height: "100%", position: "absolute",
+  },
+  capIcon: { height: "31.54%", marginLeft: 12.35, top: "36.78%", bottom: "31.68%", width: 1, opacity: 0.4, maxHeight: "100%", left: "50%", position: "absolute" },
+  capacity: { height: "69.23%", marginLeft: -11.65, top: "15.38%", bottom: "15.38%", borderRadius: 3, backgroundColor: Color.colorBlack, left: "50%" },
+  battery: { height: 13, width: 27 },
+  levels: { paddingLeft: Padding.p_6, paddingRight: Padding.p_16, gap: 7, flexDirection: "row", justifyContent: "center", flex: 1 },
+  frame: { alignSelf: "stretch", justifyContent: "space-between", gap: 0, alignItems: "center", flexDirection: "row" },
+  statusBarIphone: { height: 50, paddingTop: 21, top: 0, width: 390 },
+
+  text: { top: 67, left: 131, textAlign: "left" },
+  frameIcon: {
+    height: "2.85%", width: "6.15%", top: "7.82%", right: "88.72%", bottom: "89.33%",
+    maxWidth: "100%", overflow: "hidden", maxHeight: "100%", left: "5.13%",
+  },
+
+  instanceChild: {
+    borderWidth: 0.8, borderColor: Color.colorGainsboro, borderRadius: Border.br_10,
+    left: "0%", right: "0%", borderStyle: "solid", bottom: "0%", top: "0%",
+    height: "100%", position: "absolute", width: "100%",
+  },
+  inner: { top: 118, width: 92, height: 87, left: 20, position: "absolute" },
+  frameIcon1: { top: 138, left: 48, width: 36, height: 36 },
+  text1: { width: 22, fontFamily: FontFamily.notoSansMedium, fontSize: FontSize.size_10 },
+  wrapper: { top: 175, left: 49, width: 35, height: 13, position: "absolute" },
+
+  text2: { top: 229, left: 20, fontFamily: FontFamily.notoSansKRMedium, fontSize: FontSize.size_16, color: Color.colorGainsboro, position: "absolute" },
+  child: { top: 261 },
+
+  text3: { top: 285, left: 20, fontFamily: FontFamily.notoSansKRMedium, fontSize: FontSize.size_16, color: Color.colorGainsboro, position: "absolute" },
+  item: { top: 317 },
+
+  text4: { top: 349, left: 20, textAlign: "left" },
+
+  /* ⛔ 설명 영역의 기존 스타일들은 삭제했습니다:
+     - rectangleParent, instanceItem, text5, container, text6, text7
+  */
+
+  text8: { top: 555, left: 20, fontFamily: FontFamily.notoSansKRMedium, fontSize: FontSize.size_16, color: Color.colorGainsboro, position: "absolute" },
+  lineIcon: { top: 587 },
+
+  text9: { top: 619, left: 20, textAlign: "left" },
+  text10: { top: 659, textAlign: "left", position: "absolute", fontFamily: FontFamily.notoSansKRMedium, fontWeight: "500", lineHeight: 24 },
+  text11: { left: 289, top: 659, textAlign: "left", position: "absolute", fontSize: FontSize.size_10, color: Color.colorGray100 },
+
+  instanceInner: { width: "96.08%", right: "0.08%", left: "3.85%", backgroundColor: Color.colorSalmon },
+  rectangleView: { left: 279, width: 51, top: 652, height: 30 },
+  instanceChild1: { left: "0%", right: "0%", width: "100%" },
+  text12: {
+    width: "46.08%", top: "10%", left: "27.45%", color: Color.colorSalmon,
+    fontSize: FontSize.size_12, fontFamily: FontFamily.notoSansKRMedium, textAlign: "center", position: "absolute",
+  },
+  rectangleGroup: { left: 334, width: 51, top: 652, height: 30 },
+
+  ellipseIcon: { top: 662, width: 18, height: 18, left: 20, position: "absolute" },
+  vectorIcon: { height: "0.74%", width: "2.46%", top: "74.55%", right: "91.14%", bottom: "24.72%", left: "6.4%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%" },
+  text13: { fontSize: FontSize.size_14, left: 53, color: Color.colorDimgray },
+  text14: { left: 315, fontSize: FontSize.size_12, color: Color.colorGray200 },
+  vectorIcon1: { top: "78.34%", right: "90.16%", bottom: "19.64%", left: "5.23%" },
+  text15: { top: 739, textAlign: "left", fontFamily: FontFamily.notoSansKRMedium, fontWeight: "500", lineHeight: 24, position: "absolute" },
+  vectorIcon2: { top: "82.81%", right: "90.26%", bottom: "15.17%", left: "5.13%" },
+  text16: { top: 742, left: 316, fontSize: FontSize.size_12, color: Color.colorGray200, textAlign: "left", fontFamily: FontFamily.notoSansKRMedium, position: "absolute" },
+
+  bigButtonChild: { backgroundColor: Color.colorSalmon, left: "0%", right: "0%", width: "100%", bottom: "0%", top: "0%", height: "100%", borderRadius: Border.br_100 },
+  bigButton: { zIndex: 0, left: 0, height: 62, top: 0 },
+  text17: { fontSize: 20, textAlign: "left" },
+  frameView: { width: 90, zIndex: 1, height: 18, flexDirection: "row", justifyContent: "center" },
+  view1: { top: 798, paddingHorizontal: 130, paddingVertical: 22, gap: 10, left: 20 },
+
+  homeIndicator1: { marginLeft: 72, bottom: 8, width: 144, height: 5, transform: [{ rotate: "180deg" }], backgroundColor: Color.colorBlack, left: "50%" },
+  homeIndicator: { top: 862, height: 34 },
+
+  text18: { top: 655, left: 293, fontSize: FontSize.size_12, textAlign: "center", position: "absolute" },
+  child1: { top: 736, left: 155, height: 21 },
+  child2: { top: 729, left: 160, width: 27 },
+
+  view: { height: 896, width: "100%", backgroundColor: Color.colorGray100, flex: 1 },
 });
 
 export default Register;
