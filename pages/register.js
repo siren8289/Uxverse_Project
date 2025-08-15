@@ -17,6 +17,7 @@ import IconMarker from "../assets/vector-456.svg";
 import IconPackage from "../assets/vector-457.svg";
 
 import DescriptionBox from "./components/DescriptionBox";
+import BigButton from "./components/BigButton";
 
 const FontFamily = {
   notoSansMedium: "NotoSansMedium",
@@ -121,18 +122,13 @@ const Register = () => {
         <Text style={[styles.text16, styles.textTypo6]}>+ 지역설정</Text>
 
         {/* 등록 버튼 */}
-        <View style={[styles.view1, styles.view1Layout]}>
-          <View style={[styles.bigButton, styles.view1Layout]}>
-            <View style={[styles.bigButtonChild, styles.bigButtonChildLayout]} />
-          </View>
-          <View style={[styles.frameView, styles.timeFlexBox]}>
-            <Text style={[styles.text17, styles.textTypo1]}>등록하기</Text>
-          </View>
+        <View style={[styles.view1]}>
+          <BigButton />
         </View>
 
         {/* 하단 인디케이터 */}
         <View style={[styles.homeIndicator, styles.homeIndicatorPosition]}>
-          <View style={[styles.homeIndicator1, styles.bigButtonChildLayout]} />
+          <View style={[styles.homeIndicator1]} />
         </View>
 
         <Text style={[styles.text18, styles.textTypo1]}>별도</Text>
@@ -231,9 +227,7 @@ const styles = StyleSheet.create({
         maxHeight: "100%", 
         position: "absolute",
     },
-  view1Layout: { height: 62, width: 350, position: "absolute" },
-  bigButtonChildLayout: { borderRadius: Border.br_100, position: "absolute" },
-
+  
   time1: { fontSize: 17, lineHeight: 22, fontWeight: "600", fontFamily: FontFamily.sFPro, color: Color.colorBlack, textAlign: "center" },
   time: { paddingLeft: Padding.p_16, paddingRight: Padding.p_6, flexDirection: "row", justifyContent: "center", flex: 1 },
   dynamicIslandSpacer: { width: 124, height: 10 },
@@ -274,10 +268,6 @@ const styles = StyleSheet.create({
 
   text4: { top: 349, left: 20, textAlign: "left" },
 
-  /* ⛔ 설명 영역의 기존 스타일들은 삭제했습니다:
-     - rectangleParent, instanceItem, text5, container, text6, text7
-  */
-
   text8: { top: 555, left: 20, fontFamily: FontFamily.notoSansKRMedium, fontSize: FontSize.size_16, color: Color.colorGainsboro, position: "absolute" },
   lineIcon: { top: 587 },
 
@@ -302,12 +292,22 @@ const styles = StyleSheet.create({
   text15: { top: 739, textAlign: "left", fontFamily: FontFamily.notoSansKRMedium, fontWeight: "500", lineHeight: 24, position: "absolute" },
   vectorIcon2: { top: "82.81%", right: "90.26%", bottom: "15.17%", left: "5.13%" },
   text16: { top: 742, left: 316, fontSize: FontSize.size_12, color: Color.colorGray200, textAlign: "left", fontFamily: FontFamily.notoSansKRMedium, position: "absolute" },
-
-  bigButtonChild: { backgroundColor: Color.colorSalmon, left: "0%", right: "0%", width: "100%", bottom: "0%", top: "0%", height: "100%", borderRadius: Border.br_100 },
-  bigButton: { zIndex: 0, left: 0, height: 62, top: 0 },
-  text17: { fontSize: 20, textAlign: "left" },
   frameView: { width: 90, zIndex: 1, height: 18, flexDirection: "row", justifyContent: "center" },
-  view1: { top: 798, paddingHorizontal: 130, paddingVertical: 22, gap: 10, left: 20 },
+//   view1: { 
+//     top: 798, 
+//     paddingHorizontal: 130, 
+//     paddingVertical: 22, 
+//     gap: 10, 
+//     left: 20 
+// },
+
+view1: { 
+    top: 798, 
+    alignSelf: "center",
+    paddingHorizontal: 0, 
+    paddingVertical: 22, 
+    gap: 10, 
+},
 
   homeIndicator1: { marginLeft: 72, bottom: 8, width: 144, height: 5, transform: [{ rotate: "180deg" }], backgroundColor: Color.colorBlack, left: "50%" },
   homeIndicator: { top: 862, height: 34 },
