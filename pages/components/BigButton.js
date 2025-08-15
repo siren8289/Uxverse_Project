@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     		height: 62
   	},
   	text: {
-    		fontSize: 20,
+    		fontSize: 17,
     		lineHeight: 24,
     		fontWeight: "500",
     		fontFamily: FontFamily.notoSansKRMedium,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   	},
   	wrapper: {
     		width: 90,
-    		height: 18,
+    		height: 20,
     		flexDirection: "row",
     		alignItems: "center",
     		justifyContent: "center",
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     		gap: 10,
     		height: 62,
     		width: "100%",
-    		flex: 1
+    		marginTop: -30
   	}
 });
 
