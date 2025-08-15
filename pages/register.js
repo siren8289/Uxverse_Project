@@ -69,7 +69,7 @@ const Register = () => {
         <View style={styles.inner}>
           <View style={styles.instanceChild} />
         </View>
-        <IconCamera style={[styles.frameIcon1, styles.frameIconPosition]} width={36} height={36} />
+        <IconCamera style={[styles.frameIcon1, styles.frameIconPosition]} width={34} height={34} />
         <View style={[styles.wrapper, styles.timeFlexBox]}>
           <Text style={[styles.text1, styles.textTypo3]}>3/10</Text>
         </View>
@@ -103,11 +103,6 @@ const Register = () => {
         <View style={styles.view1}>
           <BigButton />
         </View>
-
-        {/* 하단 인디케이터 */}
-        {/* <View style={[styles.homeIndicator, styles.homeIndicatorPosition]}>
-          <View style={styles.homeIndicator1} />
-        </View> */}
 
         {/* 하단 아이콘들 */}
         <IconMarker style={[styles.child1, styles.child1Layout]} width={21} height={21} />
@@ -281,19 +276,23 @@ const styles = StyleSheet.create({
       top: 138, 
       left: 48, 
       width: 36, 
-      height: 36 
+      height: 36,
+      zIndex: 1, 
   },
   text1: { 
       width: 22, 
       fontFamily: FontFamily.notoSansMedium, 
-      fontSize: FontSize.size_10 
+      fontSize: FontSize.size_10,
+      lineHeight: 12,
+      textAlign: "center"
   },
   wrapper: { 
-      top: 175, 
+      top: 168, 
       left: 49, 
       width: 35, 
-      height: 13, 
-      position: "absolute" 
+      height: 16, 
+      position: "absolute",
+      zIndex: 2,
   },
   text2: { 
       top: 229, 
