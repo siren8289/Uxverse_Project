@@ -1,5 +1,5 @@
-import * as React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
 /* Fonts */
 const FontFamily = {
@@ -18,85 +18,57 @@ const Color = {
 
 const Group123219 = () => {
   return (
-    <View style={styles.parent}>
-      <View style={styles.view}>
-        <View style={styles.child} />
-        <View style={styles.wrapper}>
-          <Text style={styles.text}>0/2000</Text>
-        </View>
-        <Text style={[styles.text1, styles.textTypo]}>
-          {`본인 연락처, 계좌번호 등 개인정보 입력 시 등록이 제한될 수 있어요.`}
+    <View style={styles.box}>
+      {/* 안내 문구 영역 */}
+      <View style={styles.content}>
+        <Text style={styles.p}>
+          본인 연락처, 계좌번호 등 개인정보 입력 시 등록이 제한될 수 있어요.
         </Text>
-        <Text style={[styles.text2, styles.textTypo]}>
+        <Text style={styles.p}>
           거래 목적 외의 링크, 광고 문구 등은 삭제될 수 있어요.
         </Text>
+      </View>
+
+      {/* 글자 수 카운터 */}
+      <View style={styles.counterWrap}>
+        <Text style={styles.counter}>0/2000</Text>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  parent: {
-    flex: 1,
-  },
-  textTypo: {
-    fontFamily: FontFamily.notoSansKRMedium,
-    fontSize: FontSize.size_12,
-    textAlign: "left",
-    color: Color.colorGray,
-    fontWeight: "500",
-    lineHeight: 24,
-    position: "absolute",
-  },
-  child: {
-    height: "100%",
-    top: "0%",
-    right: "0%",
-    bottom: "0%",
-    left: "0%",
+  box: {
+    width: 350,
+    minHeight: 150, // 시안에 맞게 높이 고정하려면 height: 150
     borderRadius: 10,
     backgroundColor: Color.colorGainsboro,
-    borderStyle: "solid",
-    borderColor: Color.colorGainsboro,
-    borderWidth: 1,
-    position: "absolute",
-    width: "100%",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    position: "relative",
   },
-  text: {
-    width: 34,
-    fontSize: 10,
-    fontFamily: FontFamily.notoSansMedium,
-    textAlign: "left",
+  content: {
+    gap: 8, // RN 0.71+ 지원, gap 대신 marginBottom 사용 가능
+  },
+  p: {
+    fontFamily: FontFamily.notoSansKRMedium,
+    fontSize: FontSize.size_12,
+    lineHeight: 18, // 기존 24 → 줄 간격 축소
     color: Color.colorGray,
     fontWeight: "500",
-    lineHeight: 24,
+    textAlign: "left",
+    // marginBottom: 8, // gap 미지원이면 이 줄 사용
   },
-  wrapper: {
-    height: "6.3%",
-    width: "9.71%",
-    top: "87.4%",
-    right: "4.76%",
-    bottom: "6.3%",
-    left: "85.52%",
-    alignItems: "center",
-    justifyContent: "center",
+  counterWrap: {
     position: "absolute",
+    right: 10,
+    bottom: 8,
   },
-  text1: {
-    height: "37.8%",
-    width: "90.57%",
-    top: "14.08%",
-    left: "4.52%",
-  },
-  text2: {
-    width: "90.49%",
-    top: "58.27%",
-    left: "4.57%",
-  },
-  view: {
-    height: 127,
-    width: "100%",
-    flex: 1,
+  counter: {
+    fontFamily: FontFamily.notoSansMedium,
+    fontSize: 10,
+    color: Color.colorGray,
+    lineHeight: 12,
   },
 });
 

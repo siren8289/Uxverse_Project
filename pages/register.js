@@ -293,13 +293,6 @@ const styles = StyleSheet.create({
   vectorIcon2: { top: "82.81%", right: "90.26%", bottom: "15.17%", left: "5.13%" },
   text16: { top: 742, left: 316, fontSize: FontSize.size_12, color: Color.colorGray200, textAlign: "left", fontFamily: FontFamily.notoSansKRMedium, position: "absolute" },
   frameView: { width: 90, zIndex: 1, height: 18, flexDirection: "row", justifyContent: "center" },
-//   view1: { 
-//     top: 798, 
-//     paddingHorizontal: 130, 
-//     paddingVertical: 22, 
-//     gap: 10, 
-//     left: 20 
-// },
 
 view1: { 
     top: 798, 
