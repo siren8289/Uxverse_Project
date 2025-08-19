@@ -1,199 +1,260 @@
 import * as React from "react";
-import {StyleSheet, View, Text, Image} from "react-native";
-import Line10 from "../assets/line-10.svg"
-import Line14 from "../assets/line-14.svg"
-import Shareicon from "../assets/share-icon.svg"
-import Hearticon from "../assets/heart-icon.svg"
-import Frame from "../assets/frame.svg"
-import Line26 from "../assets/line-26.svg"
-import Frame1 from "../assets/frame1.svg"
-import Frame2 from "../assets/frame2.svg"
-import Arrowicon from "../assets/arrow-icon.svg"
-import Frame3 from "../assets/frame3.svg"
-import Arrowicon2 from "../assets/arrow-icon2.svg"
-import Hearticon1 from "../assets/heart-icon1.svg"
-import Hearticon2 from "../assets/heart-icon2.svg"
-import Hearticon3 from "../assets/heart-icon3.svg"
-
-// import { Color, Border, FontFamily, Padding, FontSize, Gap } from "../GlobalStyles";
-
-const FontFamily = {
-sFPro: "SF Pro",
-    notoSansKRMedium: "NotoSansKRMedium",
-};
-
-const FontSize = {
-    size_12: 12,
-    size_14: 14,
-    size_16: 16,
-};
+import { StyleSheet, View, Text, Image } from "react-native";
+import Line10 from "../assets/line-10.svg";
+import Line14 from "../assets/line-14.svg";
+import Shareicon from "../assets/share-icon.svg";
+import Hearticon from "../assets/heart-icon.svg";
+import Frame from "../assets/frame.svg";
+import Line26 from "../assets/line-26.svg";
+import Frame1 from "../assets/frame1.svg";
+import Frame2 from "../assets/frame2.svg";
+import Arrowicon from "../assets/arrow-icon.svg";
+import Frame3 from "../assets/frame3.svg";
+import Arrowicon2 from "../assets/arrow-icon2.svg";
+import Hearticon1 from "../assets/heart-icon1.svg";
+import Hearticon2 from "../assets/heart-icon2.svg";
+import Hearticon3 from "../assets/heart-icon3.svg";
+import card_product from "../assets/Rectangle111141453.png";
+import Rectangle from "../assets/Rectangle111141511.png";
+import Rectangle1 from "../assets/Rectangle111141512.png";
+import Rectangle2 from "../assets/Rectangle111141444.png";
+import Rectangle3 from "../assets/Rectangle11114144.png";
+import Rectangle4 from "../assets/homelittle.png";
+import union from "../assets/Union.svg";
 
 const Color = {
-    colorDimgray: "#5a5a5a",
-    colorSalmon: "#ff736d",
-    colorGray200: "#1b1b1b",
-    colorDarkslategray200: "#292e38",
-    colorGainsboro100: "#e3e3e3",
-    colorGray100: "#fbfbfb",
-    colorBlack: "#000",
-    colorDarkslategray100: "#3a3a3a",
-    colorGainsboro200: "#d9d9d9",
-};
-
-const Gap = {
-    gap_6: 6,
-    gap_8: 8,
-};
-
-const Padding = {
-    p_6: 6,
-    p_8: 8,
-    p_10: 10,
-    p_16: 16,
+  colorGray100: "#FFFFFF",
+  colorGray200: "#333333",
+  colorDimgray: "#666666",
+  colorDarkslategray100: "#2F4F4F",
+  colorDarkslategray200: "#4F5B62",
+  colorGainsboro100: "#E6E6E6",
+  colorGainsboro200: "#D9D9D9",
+  colorSalmon: "#FF7F7F",
+  colorBlack: "#000000",
 };
 
 const Border = {
-    br_10: 10,
-    br_100: 100,
+  br_10: 10,
+  br_100: 100,
+};
+
+const FontFamily = {
+  notoSansKRMedium: "NotoSansKR-Medium",
+  sFPro: "SFPro",
+};
+
+const Padding = {
+  p_6: 6,
+  p_8: 8,
+  p_10: 10,
+  p_16: 16,
+};
+
+const FontSize = {
+  size_12: 12,
+  size_14: 14,
+  size_16: 16,
+};
+
+const Gap = {
+  gap_6: 6,
+  gap_8: 8,
 };
 
 const GroupPurchaseDetail = () => {
-  	
-  	return (
-    		<View style={styles.groupPurchaseDetail}>
-      			<View style={styles.view}>
-        				<View style={[styles.child, styles.itemLayout]} />
-        				<View style={[styles.item, styles.itemLayout]} />
-        				<Text style={[styles.text, styles.textTypo1]}>10/15</Text>
-        				<Text style={[styles.text1, styles.textTypo1]}>70%</Text>
-        				<Text style={[styles.text2, styles.textTypo1]}>참가한 인원</Text>
-        				<Line10 style={styles.inner} width={349} />
-        				<Line14 style={[styles.lineIcon, styles.iconPosition]} width={350} />
-        				<View style={[styles.wrapper, styles.wrapperPosition]}>
-          					<Text style={[styles.text3, styles.textClr]}>홍**</Text>
-        				</View>
-        				<View style={[styles.container, styles.wrapperPosition]}>
-          					<Text style={[styles.text4, styles.textTypo1]}>
-            						<Text style={styles.text5}>{`4일 `}</Text>
-            						<Text style={styles.text6}>남음</Text>
-          					</Text>
-        				</View>
-        				<Shareicon style={styles.shareIcon} width={22} height={24} />
-        				<View style={[styles.homeIndicator, styles.unionIconPosition]}>
-          					<View style={[styles.homeIndicator1, styles.capacityPosition]} />
-        				</View>
-        				<Image style={[styles.cardProductIcon, styles.iconPosition]} resizeMode="cover" source="card_product.png" />
-        				<Hearticon style={[styles.heartIcon, styles.iconLayout1]} width={24} height={24} />
-        				<View style={styles.littleRectangle}>
-          					<View style={styles.childPosition}>
-            						<View style={[styles.instanceChild, styles.childPosition]} />
-          					</View>
-        				</View>
-        				<View style={[styles.frameView, styles.timeFlexBox]}>
-          					<Text style={[styles.text7, styles.textTypo]}>참여</Text>
-        				</View>
-        				<Frame style={[styles.frameIcon, styles.iconLayout]} />
-        				<View style={styles.lineView} />
-        				<Line26 style={[styles.child1, styles.iconPosition]} width={350} />
-        				<View style={styles.labelParent}>
-          					<Text style={[styles.label, styles.labelTypo]}>제품 설명</Text>
-          					<Text style={[styles.v, styles.textTypo1]}>
-                                {`탱글한 면발과 촉촉한 미트볼이 어우러진 정통 토마토 스파게티 밀키트입니다. 
-                                간편하게 조리해도 레스토랑 퀄리티의 깊은 맛을 즐길 수 있어요.`}</Text>
-      			</View>
-      			<View style={[styles.reviewIcon, styles.reviewIconLayout]}>
-        				<View style={[styles.reviewIconChild, styles.childPosition]} />
-        				<Image style={[styles.reviewIconItem, styles.iconLayout]} resizeMode="cover" source="Rectangle 111141511.png" />
-      			</View>
-      			<View style={styles.frameParent}>
-        				<View style={styles.labelGroup}>
-          					<Text style={[styles.label, styles.labelTypo]}>리뷰 15</Text>
-          					<Text style={[styles.text8, styles.textTypo1]}>82%가 만족한 상품입니다</Text>
-        				</View>
-        				<View style={[styles.wrapper1, styles.wrapperFlexBox]}>
-          					<Text style={[styles.text9, styles.textLayout]}>전체보기</Text>
-        				</View>
-      			</View>
-      			<View style={[styles.reviewIcon1, styles.reviewIconLayout]}>
-        				<View style={[styles.reviewIconChild, styles.childPosition]} />
-        				<Image style={[styles.reviewIconItem, styles.iconLayout]} resizeMode="cover" source="Rectangle 111141511.png" />
-      			</View>
-      			<View style={[styles.parent, styles.groupFlexBox]}>
-        				<Text style={[styles.text10, styles.textTypo1]}>만족해요</Text>
-        				<Frame1 style={styles.frameIcon1} width={14} height={14} />
-        				<Text style={styles.text11}>진짜 맛집 퀄리티!</Text>
-      			</View>
-      			<View style={[styles.group, styles.groupFlexBox]}>
-        				<Text style={[styles.text10, styles.textTypo1]}>만족해요</Text>
-        				<Frame2 style={styles.frameIcon1} width={14} height={14} />
-        				<Text style={styles.text11}>미트볼이 엄청 촉촉!</Text>
-      			</View>
-      			<View style={[styles.labelWrapper, styles.wrapperFlexBox]}>
-        				<Text style={[styles.label2, styles.labelTypo]}>연관 추천 상품</Text>
-      			</View>
-      			<Arrowicon style={[styles.arrowIcon, styles.arrowIconLayout]} width={18} height={18} />
-      			<Image style={[styles.arrowIcon1, styles.arrowIconLayout]} resizeMode="cover" source="arrow_icon.png" />
-      			<View style={[styles.parent1, styles.parent1Position]}>
-        				<Text style={[styles.text14, styles.labelTypo]}>미트볼 토마토 스파게티 밀키트</Text>
-        				<View style={[styles.parent2, styles.textPosition]}>
-          					<Text style={[styles.text15, styles.textTypo1]}>16%</Text>
-          					<Text style={[styles.text16, styles.textLayout]}>17,200</Text>
-        				</View>
-        				<Text style={[styles.text17, styles.textPosition]}>12,900원</Text>
-      			</View>
-      			<Image style={[styles.homeLittleIcon, styles.homeIconLayout]} resizeMode="cover" source="home little.png" />
-      			<Image style={[styles.homeLittleIcon1, styles.homeIconLayout]} resizeMode="cover" source="home little.png" />
-      			<View style={[styles.labelContainer, styles.labelParentLayout]}>
-        				<Text style={[styles.label3, styles.textTypo1]}>
-          					<Text>
-            						<Text style={styles.text18}>20%</Text>
-            						<Text style={[styles.text19, styles.labelTypo]}> 11,500원</Text>
-          					</Text>
-        				</Text>
-        				<Text style={[styles.label4, styles.textTypo1]}>치킨 스틱 밀키트</Text>
-        				<Text style={[styles.text8, styles.textTypo1]}>2명 남음</Text>
-      			</View>
-      			<Image style={[styles.homeLittleIcon2, styles.homeIconLayout]} resizeMode="cover" source="home little.png" />
-      			<View style={[styles.labelParent1, styles.labelParentLayout]}>
-        				<Text style={[styles.label3, styles.textTypo1]}>
-          					<Text>
-            						<Text style={styles.text18}>15%</Text>
-            						<Text style={[styles.text19, styles.labelTypo]}> 7,500원</Text>
-          					</Text>
-        				</Text>
-        				<Text style={[styles.label4, styles.textTypo1]}>바삭 군만두 밀키트</Text>
-        				<Text style={[styles.text8, styles.textTypo1]}>4명 남음</Text>
-      			</View>
-      			<View style={[styles.labelParent2, styles.labelParentLayout]}>
-        				<Text style={[styles.label, styles.labelTypo]}>9,800원</Text>
-        				<Text style={[styles.label4, styles.textTypo1]}>등심 돈까스 밀키트</Text>
-        				<Text style={[styles.text8, styles.textTypo1]}>2명 남음</Text>
-      			</View>
-      			<Image style={[styles.unionIcon, styles.unionIconPosition]} resizeMode="cover" source="Union.png" />
-      			<View style={[styles.bigButton, styles.bigPosition]}>
-        				<View style={styles.childPosition}>
-          					<View style={[styles.bigButtonChild, styles.childPosition]} />
-        				</View>
-      			</View>
-      			<View style={[styles.bigButton2, styles.bigPosition]}>
-        				<View style={styles.childPosition}>
-          					<View style={[styles.bigButtonChild, styles.childPosition]} />
-        				</View>
-      			</View>
-      			<Text style={[styles.text25, styles.text25Position]}>참여하기</Text>
-      			<Frame3 style={[styles.frameIcon3, styles.text25Position]} width={24} height={24} />
-      			<Arrowicon2 style={[styles.arrowIcon2, styles.arrowIconLayout]} width={18} height={18} />
-      			<Hearticon1 style={[styles.heartIcon1, styles.heartIconPosition]} width={18} height={18} />
-      			<Hearticon2 style={[styles.heartIcon2, styles.heartIconPosition]} width={18} height={18} />
-      			<Hearticon3 style={[styles.heartIcon3, styles.heartIconPosition]} width={18} height={18} />
-    		</View>
-  	</View>);
+  return (
+    <View style={styles.groupPurchaseDetail}>
+      <View style={styles.view}>
+        <View style={[styles.child, styles.itemLayout]} />
+        <View style={[styles.item, styles.itemLayout]} />
+        <Text style={[styles.text, styles.textTypo1]}>10/15</Text>
+        <Text style={[styles.text1, styles.textTypo1]}>70%</Text>
+        <Text style={[styles.text2, styles.textTypo1]}>참가한 인원</Text>
+        <Line10 style={styles.inner} width={349} />
+        <Line14 style={[styles.lineIcon, styles.iconPosition]} width={350} />
+        <View style={[styles.wrapper, styles.wrapperPosition]}>
+          <Text style={[styles.text3, styles.textClr]}>홍**</Text>
+        </View>
+        <View style={[styles.container, styles.wrapperPosition]}>
+          <Text style={[styles.text4, styles.textTypo1]}>
+            <Text style={styles.text5}>4일 </Text>
+            <Text style={styles.text6}>남음</Text>
+          </Text>
+        </View>
+        <Shareicon style={styles.shareIcon} width={22} height={20} />
+        <Image
+            style={[styles.cardProductIcon, styles.iconPosition]}
+            resizeMode="cover"
+            source={card_product}
+          />
+        <Hearticon style={[styles.heartIcon, styles.iconLayout1]} width={24} height={24} />
+        <View style={styles.littleRectangle}>
+          <View style={styles.childPosition}>
+            <View style={[styles.instanceChild, styles.childPosition]} />
+          </View>
+        </View>
+        <View style={[styles.frameView, styles.timeFlexBox]}>
+          <Text style={[styles.text7, styles.textTypo]}>참여</Text>
+        </View>
+        <Frame style={[styles.frameIcon, styles.iconLayout]} />
+        <View style={styles.lineView} />
+        <Line26 style={[styles.child1, styles.iconPosition]} width={350} />
+        
+        <View style={styles.labelParent}>
+            <Text style={styles.descriptionLabel}>제품 설명</Text>
+            <Text style={styles.descriptionText}>
+              탱글한 면발과 촉촉한 미트볼이 어우러진 정통 토마토 스파게티 {"\n"}밀키트
+              입니다. 간편하게 조리해도 레스토랑 퀄리티의 깊은 맛을{"\n"}즐길 수 있어요.
+            </Text>
+          </View>
+
+          <Arrowicon2 
+            style={[styles.arrowIcon, styles.arrowIconLayout]} 
+            width={10} 
+            height={10} 
+          />
+
+        <View style={[styles.reviewIcon, styles.reviewIconLayout]}>
+          <View style={[styles.reviewIconChild, styles.childPosition]} />
+          <Image
+            style={[styles.reviewIconItem, styles.iconLayout]}
+            resizeMode="cover"
+            source={Rectangle}
+          />
+        </View>
+        <View style={styles.frameParent}>
+          <View style={styles.labelGroup}>
+            <Text style={[styles.label, styles.reviewLabelTypo]}>리뷰 15</Text>
+            <Text style={[styles.text8, styles.textTypo1]}>82%가 만족한 상품입니다</Text>
+          </View>
+          <View style={[styles.wrapper1, styles.wrapperFlexBox]}>
+            <Text style={[styles.text9, styles.textLayout]}>전체보기</Text>
+          </View>
+
+        </View>
+        <View style={[styles.reviewIcon1, styles.reviewIconLayout]}>
+          <View style={[styles.reviewIconChild, styles.childPosition]} />
+          <Image
+            style={[styles.reviewIconItem, styles.iconLayout]}
+            resizeMode="cover"
+            source={Rectangle1}
+          />
+        </View>
+        <View style={[styles.parent, styles.groupFlexBox]}>
+          <Text style={[styles.text10, styles.textTypo1]}>만족해요</Text>
+          <Frame1 style={styles.frameIcon1} width={14} height={14} />
+          <Text style={styles.text11}>진짜 맛집 퀄리티!</Text>
+        </View>
+        <View style={[styles.group, styles.groupFlexBox]}>
+          <Text style={[styles.text10, styles.textTypo1]}>만족해요</Text>
+          <Frame2 style={styles.frameIcon1} width={14} height={14} />
+          <Text style={styles.text11}>미트볼이 엄청 촉촉!</Text>
+        </View>
+        <View style={[styles.labelWrapper, styles.wrapperFlexBox]}>
+          <Text style={[styles.label2, styles.labelTypo]}>연관 추천 상품</Text>
+        </View>
+        
+        <View style={[styles.parent1, styles.parent1Position]}>
+          <Text style={[styles.text14, styles.labelTypo]}>미트볼 토마토 스파게티 밀키트</Text>
+          <View style={[styles.parent2, styles.textPosition]}>
+            <Text style={[styles.text15, styles.textTypo1]}>16%</Text>
+            <Text style={[styles.text16, styles.textLayout]}>17,200</Text>
+          </View>
+          <Text style={[styles.text17, styles.textPosition]}>12,900원</Text>
+        </View>
+        
+        <Image
+          style={[styles.homeLittleIcon, styles.homeIconLayout]}
+          resizeMode="cover"
+          source={Rectangle2}
+        />
+        <Image
+          style={[styles.homeLittleIcon1, styles.homeIconLayout]}
+          resizeMode="cover"
+          source={Rectangle3}
+        />
+        <Image
+          style={[styles.homeLittleIcon2, styles.homeIconLayout]}
+          resizeMode="cover"
+          source={Rectangle4}
+        />
+        
+        <View style={[styles.labelContainer, styles.labelParentLayout]}>
+          <Text style={[styles.label3, styles.textTypo1]}>
+            <Text>
+              <Text style={styles.text18}>20%</Text>
+              <Text style={[styles.text19, styles.labelTypo]}> 11,500원</Text>
+            </Text>
+          </Text>
+          <Text style={[styles.label4, styles.textTypo1]}>치킨 스틱 밀키트</Text>
+          <Text style={[styles.text8, styles.textTypo1]}>2명 남음</Text>
+        </View>
+        <View style={[styles.labelParent1, styles.labelParentLayout]}>
+          <Text style={[styles.label3, styles.textTypo1]}>
+            <Text>
+              <Text style={styles.text18}>15%</Text>
+              <Text style={[styles.text19, styles.labelTypo]}> 7,500원</Text>
+            </Text>
+          </Text>
+          <Text style={[styles.label4, styles.textTypo1]}>바삭 군만두 밀키트</Text>
+          <Text style={[styles.text8, styles.textTypo1]}>4명 남음</Text>
+        </View>
+        <View style={[styles.labelParent2, styles.labelParentLayout]}>
+          <Text style={[styles.label, styles.labelTypo]}>9,800원</Text>
+          <Text style={[styles.label4, styles.textTypo1]}>등심 돈까스 밀키트</Text>
+          <Text style={[styles.text8, styles.textTypo1]}>2명 남음</Text>
+        </View>
+
+        <View style={[styles.bigButton, styles.bigPosition]}>
+          <View style={styles.childPosition}>
+            <View style={[styles.bigButtonChild, styles.childPosition]} />
+          </View>
+        </View>
+        <View style={[styles.bigButton2, styles.bigPosition]}>
+          <View style={styles.childPosition}>
+            <View style={[styles.bigButtonChild, styles.childPosition]} />
+          </View>
+        </View>
+        <Text style={[styles.text25, styles.text25Position]}>참여하기</Text>
+        <Frame3 style={[styles.frameIcon3, styles.text25Position]} width={24} height={24} />
+        <Arrowicon2 style={[styles.arrowIcon2, styles.arrowIconLayout]} width={10} height={10} />
+        <Hearticon1 style={[styles.heartIcon1, styles.heartIconPosition]} width={18} height={18} />
+        <Hearticon2 style={[styles.heartIcon2, styles.heartIconPosition]} width={18} height={18} />
+        <Hearticon3 style={[styles.heartIcon3, styles.heartIconPosition]} width={18} height={18} />
+      </View>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   groupPurchaseDetail: {
     backgroundColor: Color.colorGray100,
     flex: 1,
+  },
+  descriptionLabel: {
+    fontSize: FontSize.size_14,
+    fontFamily: FontFamily.notoSansKRMedium,
+    fontWeight: "600",
+    color: Color.colorGray200,
+    textAlign: "left",
+  },
+  descriptionText: {
+    lineHeight: 18,
+    alignSelf: "stretch",
+    color: Color.colorDimgray,
+    fontSize: 11,
+    fontFamily: FontFamily.notoSansKRMedium,
+    fontWeight: "500",
+    textAlign: "left",
+  },
+  reviewLabelTypo: {
+    textAlign: "left",
+    fontFamily: FontFamily.notoSansKRMedium,
+    fontWeight: "500",
+    fontSize: 15,  
+    color: Color.colorGray200,   
+    lineHeight: 18,
   },
   itemLayout: {
     height: 7,
@@ -208,7 +269,7 @@ const styles = StyleSheet.create({
   },
   iconPosition: {
     width: 350,
-    left: 20,
+    left: 26,
     position: "absolute",
   },
   wrapperPosition: {
@@ -225,21 +286,9 @@ const styles = StyleSheet.create({
     color: Color.colorDarkslategray100,
     textAlign: "left",
   },
-  unionIconPosition: {
-    width: 390,
-    left: 0,
-    position: "absolute",
-  },
-  /* 남은 곳(참여 작은 배지 등)에서 쓰이므로 유지 */
   timeFlexBox: {
     justifyContent: "center",
     alignItems: "center",
-  },
-  /* 홈 인디케이터에서 쓰이므로 유지 */
-  capacityPosition: {
-    backgroundColor: Color.colorBlack,
-    left: "50%",
-    position: "absolute",
   },
   iconLayout1: {
     width: 24,
@@ -286,7 +335,7 @@ const styles = StyleSheet.create({
     width: 45,
     fontFamily: FontFamily.notoSansKRMedium,
     fontWeight: "500",
-    lineHeight: 24,
+    lineHeight: 20,
   },
   groupFlexBox: {
     columnGap: 2,
@@ -317,6 +366,7 @@ const styles = StyleSheet.create({
     width: 119,
     top: 1004,
     position: "absolute",
+    borderRadius: 10,
   },
   labelParentLayout: {
     gap: Gap.gap_6,
@@ -357,7 +407,7 @@ const styles = StyleSheet.create({
     color: Color.colorDimgray,
     lineHeight: 24,
     textAlign: "left",
-    fontSize: FontSize.size_12,
+    fontSize: 12,
     left: 20,
     position: "absolute",
   },
@@ -369,13 +419,13 @@ const styles = StyleSheet.create({
     color: Color.colorDimgray,
     lineHeight: 24,
     textAlign: "left",
-    fontSize: FontSize.size_12,
+    fontSize: 12,
     position: "absolute",
   },
   text2: {
     top: 533,
     width: 75,
-    fontSize: FontSize.size_14,
+    fontSize: 13,
     color: Color.colorDimgray,
     lineHeight: 24,
     textAlign: "left",
@@ -425,18 +475,6 @@ const styles = StyleSheet.create({
     top: 445,
     position: "absolute",
     overflow: "hidden",
-  },
-  homeIndicator1: {
-    marginLeft: 72,
-    bottom: 8,
-    width: 144,
-    height: 5,
-    transform: [{ rotate: "180deg" }],
-    borderRadius: Border.br_100,
-  },
-  homeIndicator: {
-    top: 1317,
-    height: 35,
   },
   cardProductIcon: {
     top: 105,
@@ -497,7 +535,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: FontFamily.notoSansKRMedium,
     fontWeight: "500",
-    lineHeight: 24,
+    lineHeight: 18,
     overflow: "hidden",
     flex: 1,
   },
@@ -514,6 +552,7 @@ const styles = StyleSheet.create({
     width: 350,
     left: 20,
     position: "absolute",
+    alignItems: "flex-start",
   },
   reviewIconChild: {
     borderColor: Color.colorGainsboro100,
@@ -539,9 +578,9 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     alignItems: "center",
     color: Color.colorDimgray,
-    lineHeight: 24,
+    lineHeight: 18,
     textAlign: "left",
-    fontSize: FontSize.size_12,
+    fontSize: 11,
   },
   labelGroup: {
     height: 38,
@@ -555,7 +594,7 @@ const styles = StyleSheet.create({
     display: "flex",
     textAlign: "center",
     color: Color.colorDimgray,
-    fontSize: FontSize.size_12,
+    fontSize: 11,
   },
   wrapper1: {
     flexDirection: "row",
@@ -578,7 +617,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontSize: FontSize.size_14,
     color: Color.colorDimgray,
-    lineHeight: 24,
+    lineHeight: 14,
     textAlign: "left",
   },
   frameIcon1: {
@@ -595,8 +634,8 @@ const styles = StyleSheet.create({
     color: Color.colorDimgray,
     fontFamily: FontFamily.notoSansKRMedium,
     fontWeight: "500",
-    lineHeight: 24,
-    fontSize: FontSize.size_12,
+    lineHeight: 12,
+    fontSize: 11,
   },
   parent: {
     left: 364,
@@ -605,7 +644,7 @@ const styles = StyleSheet.create({
     left: 104,
   },
   label2: {
-    width: 96,
+    width: 95,
     height: 16,
     display: "flex",
     color: Color.colorGray200,
@@ -613,8 +652,9 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: FontFamily.notoSansKRMedium,
     fontWeight: "500",
-    lineHeight: 24,
+    lineHeight: 18,
     overflow: "hidden",
+    fontSize: 11,
   },
   labelWrapper: {
     top: 962,
@@ -685,7 +725,8 @@ const styles = StyleSheet.create({
   },
   text18: {
     color: Color.colorSalmon,
-    fontSize: FontSize.size_14,
+    fontSize: 13,
+    lineHeight: 18,
   },
   text19: {
     color: Color.colorGray200,
@@ -704,8 +745,8 @@ const styles = StyleSheet.create({
     color: Color.colorGray200,
     alignSelf: "stretch",
     alignItems: "center",
-    fontSize: FontSize.size_14,
-    lineHeight: 24,
+    fontSize: 13,
+    lineHeight: 18,
     textAlign: "left",
     overflow: "hidden",
     flex: 1,
@@ -722,10 +763,6 @@ const styles = StyleSheet.create({
   labelParent2: {
     left: -9,
   },
-  unionIcon: {
-    top: 1202,
-    height: 115,
-  },
   bigButtonChild: {
     borderRadius: Border.br_100,
     backgroundColor: Color.colorSalmon,
@@ -740,7 +777,7 @@ const styles = StyleSheet.create({
   },
   text25: {
     left: 204,
-    fontSize: 20,
+    fontSize: 18,
     color: Color.colorGray100,
     textAlign: "left",
     fontFamily: FontFamily.notoSansKRMedium,
