@@ -20,7 +20,7 @@ import Rectangle1 from "../assets/Rectangle111141512.png";
 import Rectangle2 from "../assets/Rectangle111141444.png";
 import Rectangle3 from "../assets/Rectangle11114144.png";
 import Rectangle4 from "../assets/homelittle.png";
-import union from "../assets/Union.svg";
+import Union from "../assets/Union.svg";
 
 const Color = {
   colorGray100: "#FFFFFF",
@@ -130,6 +130,7 @@ const GroupPurchaseDetail = () => {
           </View>
           <View style={[styles.wrapper1, styles.wrapperFlexBox]}>
             <Text style={[styles.text9, styles.textLayout]}>전체보기</Text>
+            <Arrowicon style={styles.seeMoreIcon} width={8} height={8} />
           </View>
 
         </View>
@@ -232,6 +233,10 @@ const styles = StyleSheet.create({
     backgroundColor: Color.colorGray100,
     flex: 1,
   },
+  seeMoreIcon: {
+  marginLeft: 4,
+  alignSelf: "center",
+},
   descriptionLabel: {
     fontSize: FontSize.size_14,
     fontFamily: FontFamily.notoSansKRMedium,
@@ -332,7 +337,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textLayout: {
-    width: 45,
+    width: 55,
     fontFamily: FontFamily.notoSansKRMedium,
     fontWeight: "500",
     lineHeight: 20,
@@ -588,7 +593,7 @@ const styles = StyleSheet.create({
     gap: Gap.gap_8,
   },
   text9: {
-    height: 18,
+    height: 21,
     justifyContent: "center",
     alignItems: "center",
     display: "flex",
@@ -791,8 +796,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   arrowIcon2: {
-    top: 1206,
-    left: 186,
+    top: 1215,
+    left: 195,
   },
   heartIcon1: {
     left: 224,
