@@ -20,7 +20,6 @@ import Rectangle1 from "../assets/Rectangle111141512.png";
 import Rectangle2 from "../assets/Rectangle111141444.png";
 import Rectangle3 from "../assets/Rectangle11114144.png";
 import Rectangle4 from "../assets/homelittle.png";
-import Union from "../assets/Union.svg";
 
 const Color = {
   colorGray100: "#FFFFFF",
@@ -111,8 +110,8 @@ const GroupPurchaseDetail = () => {
 
           <Arrowicon2 
             style={[styles.arrowIcon, styles.arrowIconLayout]} 
-            width={10} 
-            height={10} 
+            width={8} 
+            height={8} 
           />
 
         <View style={[styles.reviewIcon, styles.reviewIconLayout]}>
@@ -220,6 +219,7 @@ const GroupPurchaseDetail = () => {
         <Text style={[styles.text25, styles.text25Position]}>참여하기</Text>
         <Frame3 style={[styles.frameIcon3, styles.text25Position]} width={24} height={24} />
         <Arrowicon2 style={[styles.arrowIcon2, styles.arrowIconLayout]} width={10} height={10} />
+
         <Hearticon1 style={[styles.heartIcon1, styles.heartIconPosition]} width={18} height={18} />
         <Hearticon2 style={[styles.heartIcon2, styles.heartIconPosition]} width={18} height={18} />
         <Hearticon3 style={[styles.heartIcon3, styles.heartIconPosition]} width={18} height={18} />
