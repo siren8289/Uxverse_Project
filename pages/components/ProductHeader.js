@@ -21,8 +21,8 @@ const ProductHeader = () => {
     <>
       {/* 상단 제품 카드 */}
       <Image style={[styles.cardProductIcon, styles.iconPosition]} source={card_product} resizeMode="cover" />
-      <Shareicon style={styles.shareIcon} width={22} height={24} />
-      <Hearticon style={[styles.heartIcon, styles.iconLayout1]} width={24} height={24} />
+      <Shareicon style={styles.shareIcon} width={20} height={20} />
+      <Hearticon style={[styles.heartIcon, styles.iconLayout1]} width={25} height={25} />
 
       {/* 남은 시간 / 참여 버튼 */}
       <Line14 style={[styles.lineIcon, styles.iconPosition]} width={350} />
