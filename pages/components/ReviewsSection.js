@@ -116,17 +116,19 @@ const styles = StyleSheet.create({
       fontWeight: "500", 
       fontSize: 15, 
       color: Color.colorGray200, 
-      lineHeight: 18 
+      lineHeight: 14,
+      marginLeft : 4 
     },
   subText: { 
       height: 14,
       display: "flex", 
       alignItems: "center", 
       color: Color.colorDimgray, 
-      lineHeight: 18, 
+      lineHeight: 12, 
       textAlign: "left", 
-      fontSize: 11, 
-      alignSelf: "stretch" 
+      fontSize: 12, 
+      alignSelf: "stretch",
+      marginLeft : 4 
     },
   wrapper1: { 
       height: 18, 
@@ -141,10 +143,12 @@ const styles = StyleSheet.create({
       color: Color.colorDimgray, 
       fontSize: 11, 
       justifyContent: "center", 
-      alignItems: "center" 
+      alignItems: "center",
+      lineHeight: 20,
+      marginLeft : 10
     },
   seeMoreIcon: { 
-      marginLeft: 4, 
+      marginLeft: 6, 
       alignSelf: "center"
     },
   groupFlexBox: { 

@@ -95,9 +95,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         textAlign: "left",
         fontWeight: "500",
-        lineHeight: 18,
+        lineHeight: 20,
         overflow: "hidden",
-        fontSize: 11,
+        fontSize: 15,
     },
   homeIconLayout: {
         height: 119, 
@@ -122,8 +122,9 @@ const styles = StyleSheet.create({
         left: 0, 
         position: "absolute", 
         top: 0, 
+        fontSize: 15, 
         textAlign: "left", 
-        fontWeight: "500", 
+        fontWeight: "600", 
         lineHeight: 24 
     },
   parent2: { 
@@ -139,13 +140,15 @@ const styles = StyleSheet.create({
         color: Color.colorSalmon, 
         fontSize: 14, 
         lineHeight: 24, 
-        textAlign: "left" 
+        textAlign: "left" ,
+        fontWeight: "600", 
     },
   text16: { 
         textDecorationLine: "line-through", 
         color: Color.colorDarkslategray100, 
         textAlign: "left", 
-        fontSize: 14 
+        fontSize: 14,
+        
     },
   text17: { 
         top: 45, 
@@ -153,7 +156,7 @@ const styles = StyleSheet.create({
         width: 137, 
         color: Color.colorSalmon, 
         textAlign: "left", 
-        fontWeight: "500", 
+        fontWeight: "600", 
         lineHeight: 24, 
         left: 0, 
         position: "absolute" 
