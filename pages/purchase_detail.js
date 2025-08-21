@@ -26,14 +26,17 @@ const GroupPurchaseDetail = () => {
 };
 
 const styles = StyleSheet.create({
-  groupPurchaseDetail: { backgroundColor: Color.colorGray100, flex: 1 },
+  groupPurchaseDetail: { 
+      backgroundColor: Color.colorGray100,
+      flex: 1 
+    },
   view: {
-    height: 1352,
-    overflow: "hidden",
-    width: "100%",
-    backgroundColor: Color.colorGray100,
-    flex: 1,
-  },
+      height: 1352,
+      overflow: "hidden",
+      width: "100%",
+      backgroundColor: Color.colorGray100,
+      flex: 1,
+    },
 });
 
 export default GroupPurchaseDetail;
