@@ -2,9 +2,8 @@ import * as React from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import IconCellular from "../assets/Cellular-Connection.svg";
 import IconWifi from "../assets/Wifi.svg";
-import IconBackArrow from "../assets/frame.svg";
+import IconBackArrow from "../assets/Frame.svg";
 import IconCamera from "../assets/frame1.svg";
 import DividerLine14 from "../assets/line-14.svg";
 import DividerLine15 from "../assets/line-15.svg";

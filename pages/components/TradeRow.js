@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import IconEllipse from "../../assets/ellipse-172.svg";
-import IconCheck from "../../assets/vector.svg";   // ✅ 체크 아이콘 (경로 주의)
+import IconCheck from "../../assets/Vector.svg";   // ✅ 체크 아이콘 (경로 주의)
 import IconCheck2 from "../../assets/vector1.svg";
 import IconCheck3 from "../../assets/vector2.svg";
 
