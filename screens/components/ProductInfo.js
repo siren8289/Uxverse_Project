@@ -1,25 +1,17 @@
 // src/components/ProductInfo.js
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, PixelRatio } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
-// ===== px 변환 유틸 =====
-const BASE_WIDTH = 375; // 디자인 기준 가로 px (Figma나 Zeplin 시안 기준)
-const px = (size) => {
-  const { width } = Dimensions.get("window");
-  const scale = width / BASE_WIDTH;
-  return PixelRatio.roundToNearestPixel(size * scale);
-};
-
-// ===== 글로벌 스타일 =====
+// 폰트와 색상 정의
 const FontFamily = {
   notoSansKRMedium: "NotoSansKRMedium",
 };
+
 const Color = {
   colorGray: "#1b1b1b",
   colorDimgray: "#5a5a5a",
 };
 
-// ===== 합쳐진 컴포넌트 =====
 /**
  * ProductInfo
  * @param {string} title   - 제품명 (기본: "캠핑용 텐트 1~2인용")
@@ -40,43 +32,37 @@ const ProductInfo = ({
   );
 };
 
-// ===== 스타일 =====
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingVertical: px(8),
-    paddingHorizontal: px(12),
+    paddingHorizontal: 0,  // ← 좌/우 여백 제거(부모에서 통일)
+    paddingVertical: 10,   // 세로만 유지
   },
   title: {
-    width: "100%",
-    fontSize: px(16),
-    lineHeight: px(24),
+    fontSize: 16,
+    lineHeight: 24,
     fontWeight: "500",
     fontFamily: FontFamily.notoSansKRMedium,
     color: Color.colorGray,
     textAlign: "left",
-    overflow: "hidden",
   },
   price: {
-    width: "100%",
-    fontSize: px(18),
-    lineHeight: px(24),
+    marginTop: 4,
+    fontSize: 18,
+    lineHeight: 24,
     fontWeight: "500",
     fontFamily: FontFamily.notoSansKRMedium,
     color: Color.colorGray,
     textAlign: "left",
-    overflow: "hidden",
-    marginTop: px(4),
   },
   address: {
-    width: "100%",
-    fontSize: px(12),
-    lineHeight: px(24),
+    marginTop: 8,
+    fontSize: 12,
+    lineHeight: 18, // 12pt 텍스트에 어울리는 라인하이트
     fontWeight: "500",
     fontFamily: FontFamily.notoSansKRMedium,
     color: Color.colorDimgray,
     textAlign: "left",
-    marginTop: px(2),
   },
 });
 

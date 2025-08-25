@@ -1,22 +1,27 @@
 import React from "react";
-import { SafeAreaView, ScrollView } from "react-native";
-import ListingCard from "./src/components/ListingCard"; // 경로 확인 필수
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import MyPageScreen from "./screens/MyPageScreen";
+import RentalDetailScreen from "./screens/RentalDetailScreen";
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <ListingCard
-          price="7,000원"
-          title="캠핑용 조명 랜턴"
-          location="서울 마포구"
+    <NavigationContainer>
+      <Tab.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Screen
+          name="MyPage"
+          component={MyPageScreen}
+          options={{ title: "마이페이지" }}
         />
-        <ListingCard
-          price="12,000원"
-          title="접이식 캠핑 체어"
-          location="부산 해운대구"
+        <Tab.Screen
+          name="RentalDetail"
+          component={RentalDetailScreen}
+          options={{ title: "상품 상세" }}
         />
-      </ScrollView>
-    </SafeAreaView>
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }

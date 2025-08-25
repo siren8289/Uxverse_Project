@@ -19,7 +19,8 @@ const ProductLabel = () => {
 
       {/* 제품 상세 설명 */}
       <Text style={styles.description}>
-        미니민 원터치 1~2인용 캠핑 텐트입니다. 가볍고 설치가 쉬워 초보자도 3분 이내에 설치할 수 있어
+        미니민 원터치 1~2인용 캠핑 텐트입니다. 
+        가볍고 설치가 쉬워 초보자도 3분 이내에 설치할 수 있어
         간편하게 사용할 수 있습니다. 방수효과도 좋고 튼튼한 제품입니다.
       </Text>
     </View>
@@ -28,11 +29,11 @@ const ProductLabel = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 300, // 필요에 따라 px 단위로 조절 가능
-    padding: 10,
+    width: "100%",
+    paddingHorizontal: 0,  // ← 좌/우 여백 제거
+    paddingVertical: 10,   // 세로만 유지
   },
   label: {
-    width: 300,
     height: 24, // 텍스트 높이에 맞춤
     fontSize: 16,
     lineHeight: 24,
@@ -43,7 +44,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   description: {
-    width: 300,
     fontSize: 12,
     lineHeight: 18,
     fontWeight: "500",

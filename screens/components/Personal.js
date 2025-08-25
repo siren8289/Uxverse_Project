@@ -1,25 +1,27 @@
 // components/Personal.js
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Arrow_icon from "../assets/Arrow_icon.svg";
+import RightIcon from "../assets/Right.svg";
 
-const FontFamily = {
-  notoSansKRMedium: "NotoSansKRMedium", // ✅ NotoSansKR-Medium 이름 일치
-};
+const FontFamily = { notoSansKRMedium: "NotoSansKRMedium" };
+const Color = { colorGray: "#1b1b1b" };
 
-const Color = {
-  colorGray: "#1b1b1b",
-};
-
-// ✅ title을 props로 받음
-const Personal = ({ title }) => {
+const Personal = ({ title, insetLeft = 20, insetRight = 16 }) => {
   return (
     <View style={styles.parent}>
-      <View style={styles.view}>
-        {/* 동적으로 텍스트 표시 */}
+      {/* 행 컨텐츠 */}
+      <View style={[styles.row, { paddingLeft: 0, paddingRight: 0 , marginTop: 32}]}>
         <Text style={styles.text}>{title}</Text>
-        <Arrow_icon style={styles.child} width={20} height={20} />
+        <RightIcon width={20} height={20} />
       </View>
+
+      {/* Divider */}
+      <View
+        style={[
+          styles.divider,
+          { marginLeft: 0, marginRight: 0 },
+        ]}
+      />
     </View>
   );
 };
@@ -27,27 +29,26 @@ const Personal = ({ title }) => {
 const styles = StyleSheet.create({
   parent: {
     width: "100%",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
+    alignSelf: "stretch",
   },
-  view: {
-    flexDirection: "row", // ✅ 텍스트 + 아이콘 가로 배치
+  row: {
+    minHeight: 48,
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between", // 양 끝 정렬
+    justifyContent: "space-between",
   },
   text: {
     fontSize: 16,
-    letterSpacing: -0.4,
     lineHeight: 24,
+    letterSpacing: -0.4,
     fontWeight: "500",
     fontFamily: FontFamily.notoSansKRMedium,
     color: Color.colorGray,
   },
-  child: {
-    width: 20,
-    height: 20,
+  divider: {
+    height: 1,
+    backgroundColor: "#E0E0E0",
+    alignSelf: "stretch",
   },
 });
 
