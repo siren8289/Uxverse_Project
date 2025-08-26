@@ -1,22 +1,36 @@
+// App.js
 import React from "react";
-import { SafeAreaView, ScrollView } from "react-native";
-import ListingCard from "./src/components/ListingCard"; // 경로 확인 필수
+import { SafeAreaView, StyleSheet, View } from "react-native";
+
+import RentalSharingService from "./pages/Rental_sharing_service.js";
+import Nav from "./src/components/Nav.js";
 
 export default function App() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <ListingCard
-          price="7,000원"
-          title="캠핑용 조명 랜턴"
-          location="서울 마포구"
+    <SafeAreaView style={styles.container}>
+      {/* 메인 화면 */}
+      <RentalSharingService />
+
+      {/* Nav를 하단에 고정 */}
+      <View style={styles.navWrap}>
+        <Nav
+          state={{ index: 0, routes: [] }}
+          descriptors={{}}
+          navigation={{ navigate: () => { } }}
         />
-        <ListingCard
-          price="12,000원"
-          title="접이식 캠핑 체어"
-          location="부산 해운대구"
-        />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#fff" },
+
+  navWrap: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
+    right: 0,
+    backgroundColor: "transparent",
+  },
+});
