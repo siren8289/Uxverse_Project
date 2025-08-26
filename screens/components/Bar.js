@@ -18,20 +18,22 @@ const Long1 = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // 바 자체만 필요하니 flex:1 제거 (불필요한 확장 방지)
   },
   barWrapper: {
-    height: 7, // px 단위
-    width: 300, // 필요에 따라 조절 가능
-    flex: 1,
+    height: 7,
+    width: "100%",       // ← 부모(스크린 패딩 20 적용된 영역) 가로폭을 그대로 사용
     position: "relative",
+    marginTop: 2,        // ← 살짝 아래로
+    overflow: "hidden",  // ← 혹시라도 넘치는 픽셀 깔끔히 잘라줌
+    alignSelf: "center",
   },
   bar: {
     position: "absolute",
     top: 0,
     left: 0,
-    width: 300, // px 단위
-    height: 7, // px 단위
+    right: 0,            // ← width: "100%" 대신 left/right로 꽉 채우기
+    height: 7,
     borderRadius: 10,
     backgroundColor: Color.colorDarkslategray,
   },

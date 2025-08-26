@@ -21,9 +21,12 @@ import { Color, FontFamily, FontSize } from "../pages/GlobalStyles";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const HORIZONTAL_PADDING = 20;
 
-// 진행바를 사진처럼 더 길게
-const EXTRA_BAR_WIDTH = 16;
-const BAR_WIDTH = SCREEN_WIDTH - HORIZONTAL_PADDING * 2 + EXTRA_BAR_WIDTH;
+// ── 진행바: 폭/비율 정의 ──────────────────────────────────────────
+const TRACK_WIDTH = SCREEN_WIDTH - HORIZONTAL_PADDING * 2;
+const TRACK_HEIGHT = 11;
+const FILL_HEIGHT = 7;
+const FILL_RATIO = 0.5; // 빨간바 1/2
+const FILL_TOP_OFFSET = (TRACK_HEIGHT - FILL_HEIGHT) / 2; // 2px
 
 const Mypage = () => {
   // v6 navigation 객체
@@ -39,17 +42,17 @@ const Mypage = () => {
   // 데이터
   const currentAmount   = 20000;
   const nextLevelAmount = 40000;
-  const progress        = Math.min(currentAmount / nextLevelAmount, 1);
-  const progressWidth   = Math.round(BAR_WIDTH * progress);
+
+  // 빨간바 길이(현재는 1/2 고정)
+  const progressWidth = Math.round(TRACK_WIDTH * FILL_RATIO);
 
   return (
-    // 🔒 여기서부터 화면 전체를 v4 호환 내비 컨텍스트로 감쌈 (TopBar_1/ Nav 모두 커버)
     <NavigationContext.Provider value={legacyNav}>
       <View style={styles.container}>
         {/* 상단바 (수정 불가) */}
         <TopBar_1 />
 
-        {/* '렌탈/공유' 가리기 → '마이페이지' 표시 */}
+        {/* '렌탈/공유' 가리기 → '마이페이지' 표시 (좌우 50만 덮어 중앙 가림) */}
         <View pointerEvents="none" style={styles.titleOverlay}>
           <Text style={styles.titleText}>마이페이지</Text>
         </View>
@@ -74,11 +77,11 @@ const Mypage = () => {
               <Text style={styles.remainText}> 남음</Text>
             </View>
 
-            {/* 진행 바 (길이 확장) */}
+            {/* 진행 바: 검정 트랙(Bar) + 빨간 바(1/2 길이) 완전 겹치기 */}
             <View style={styles.progressWrap}>
-              <View style={styles.barContainer}>
-                <Bar />
-                <View style={[styles.barFill, { width: progressWidth }]} />
+              <View style={[styles.barOverlay, { width: TRACK_WIDTH }]}>
+                <Bar sideGap={0} height={TRACK_HEIGHT} />
+                <View style={[styles.redFill, { width: progressWidth }]} />
               </View>
 
               <View style={styles.progressLabelRow}>
@@ -108,7 +111,7 @@ const Mypage = () => {
           <View style={{ height: 120 }} />
         </ScrollView>
 
-        {/* Nav는 수정 불가 → v4 호환 내비 객체를 prop으로도 전달(보수적) 
+        {/* 필요 시 하단 네비 사용
         <View style={styles.navWrap}>
           <Nav active="MYPAGE" navigation={legacyNav} />
         </View>
@@ -124,10 +127,10 @@ const styles = StyleSheet.create({
     backgroundColor: Color?.colorGray100 || "#FBFBFB",
   },
 
-  // TopBar_1 위를 덮는 타이틀
+  // TopBar_1 위를 덮는 타이틀 (살짝 좁혀 중앙만 가림)
   titleOverlay: {
     position: "absolute",
-    top: 50, // 필요 시 65~72 사이로 보정
+    top: 50,
     left: 50,
     right: 50,
     alignItems: "center",
@@ -138,13 +141,13 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 18,
     lineHeight: 24,
-    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKR-Medium",
+    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKRMedium",
     fontWeight: "500",
     color: Color?.colorGray200 || "#1b1b1b",
   },
 
   scrollContent: {
-    paddingHorizontal: HORIZONTAL_PADDING,
+    paddingHorizontal: HORIZONTAL_PADDING, // = 20
     paddingBottom: 100,
   },
 
@@ -158,27 +161,28 @@ const styles = StyleSheet.create({
     marginTop: 30,
     fontSize: FontSize?.size_18 || 18,
     lineHeight: 22,
-    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKR-Medium",
+    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKRMedium",
     fontWeight: "500",
     color: Color?.colorGray200 || "#1b1b1b",
   },
   userLevelRow: {
     position: "absolute",
     top: 30,
-    right: 0,
+    right: -2,
     flexDirection: "row",
     alignItems: "center",
   },
   userLevel: {
     fontSize: FontSize?.size_16 || 16,
     lineHeight: 22,
-    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKR-Medium",
+    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKRMedium",
     fontWeight: "500",
     color: Color?.colorGray200 || "#1b1b1b",
-    marginRight: 4,
+    marginRight: 2,
   },
   userLevelArrow: {
     marginTop: 2,
+    marginRight: -2
   },
 
   toNext: {
@@ -186,7 +190,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize?.size_14 || 14,
     lineHeight: 22,
     color: Color?.colorGray200 || "#1b1b1b",
-    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKR-Medium",
+    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKRMedium",
     fontWeight: "500",
   },
   remainRow: {
@@ -198,57 +202,59 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     color: Color?.colorSalmon || "#FF736D",
-    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKR-Medium",
+    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKRMedium",
     fontWeight: "500",
   },
   remainText: {
     fontSize: FontSize?.size_16 || 16,
     lineHeight: 24,
     color: Color?.colorGray200 || "#1b1b1b",
-    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKR-Medium",
+    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKRMedium",
     fontWeight: "500",
   },
 
-  /* 진행바 (길게) */
+  /* 진행바 */
   progressWrap: {
     marginTop: 25,
     width: "100%",
     alignItems: "center",
   },
-  barContainer: {
-    width: BAR_WIDTH,
-    height: 11,
+  barOverlay: {
+    height: TRACK_HEIGHT,
     position: "relative",
     alignSelf: "center",
   },
-  barFill: {
+  redFill: {
     position: "absolute",
-    top: 2, // Bar 트랙 두께에 맞춰 중앙 정렬
+    top: FILL_TOP_OFFSET, // 2px (11-7)/2
     left: 0,
-    height: 7,
+    height: FILL_HEIGHT,
     borderRadius: 10,
     backgroundColor: Color?.colorSalmon || "#FF736D",
   },
+
+  // 라벨
   progressLabelRow: {
     marginTop: 11.5,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
+    // paddingRight 없음 (중복 간격 방지)
   },
   progressEdgeLeft: {
     fontSize: FontSize?.size_16 || 16,
     lineHeight: 22,
     color: Color?.colorGray200 || "#1b1b1b",
-    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKR-Medium",
+    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKRMedium",
     fontWeight: "500",
   },
   progressEdgeRight: {
     fontSize: FontSize?.size_16 || 16,
     lineHeight: 22,
     color: Color?.colorGray200 || "#1b1b1b",
-    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKR-Medium",
+    fontFamily: FontFamily?.notoSansKRMedium || "NotoSansKRMedium",
     fontWeight: "500",
-    
+    marginRight: 0, // ← 여기! 화면 기준 오른쪽 20px(컨테이너 패딩)만 적용
   },
 
   /* 아이콘 그리드 */
@@ -265,7 +271,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 
-  /* 하단 네비 고정 */
+  /* 하단 네비 고정 (원하면 주석 해제) */
   navWrap: {
     position: "absolute",
     left: 0,
