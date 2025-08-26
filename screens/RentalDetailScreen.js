@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native"; // ✅ 추가
+import { useNavigation } from "@react-navigation/native";
 
 // 공통 UI
 import Button from "../src/components/Button_Register";
@@ -20,24 +20,25 @@ import ProductInfo from "./components/ProductInfo";
 // SVG(대문자)
 import HeartIcon from "./assets/Heart_icon.svg";
 import ShareIcon from "./assets/Share_icon.svg";
-import LeftIcon from "../src/components/assets/Left.svg"; // ⬅️ 뒤로가기 아이콘 추가
-import SmileIcon from "./assets/Smile.svg"; // screens/assets/Smile.svg 기준
-import UnderIcon from "./assets/Under.svg";
+import LeftIcon from "../src/components/assets/Left.svg";
+import SmileIcon from "./assets/Smile.svg";
+import RightIcon from "./assets/Right.svg";
 
 // 연관 추천 상품 이미지들
 import TableImage from "./assets/Table.png";
 import LightImage from "./assets/Light.png";
 import BurnerImage from "./assets/Burner.png";
+import UnderIcon from "./assets/Under.svg"; 
 
 const RentalDetailScreen = () => {
-  const navigation = useNavigation(); // ✅ 추가
+  const navigation = useNavigation();
 
   const product = {
     title: "캠핑용 텐트 1~2인용",
     price: "20,000원",
     location: "서울시 관악구 신림역",
     description:
-      "미니민 원터치 1~2인용 캠핑 텐트입니다. 가볍고 설치가 쉬워 초보자도 3분 이내 설치 가능하며 방수 효과도 좋고 튼튼한 제품입니다.",
+      "미니민 원터치 1~2인용 캠핑 텐트입니다. 가볍고 설치가 쉬워 초보자도 3분 이내 설치할 수 있어 간편하게 사용할 수 있습니다. 방수효과도 좋고 튼튼한 제품입니다.",
     image: require("./assets/Card_product.png"),
     reviews: [
       { title: "만족해요", comment: "초보도 쉽게 사용할 수 있어요." },
@@ -45,7 +46,6 @@ const RentalDetailScreen = () => {
     ],
   };
 
-  // 연관 추천 상품 더미 데이터
   const related = [
     {
       id: "table",
@@ -64,7 +64,7 @@ const RentalDetailScreen = () => {
     {
       id: "burner",
       image: BurnerImage,
-      title: "9,000원 버너",
+      title: "캠핑용 버너",
       price: "9,000원",
       address: "서울시 관악구 · 2시간 전",
     },
@@ -76,10 +76,13 @@ const RentalDetailScreen = () => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.topBar}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <LeftIcon width={24} height={24} />
-        </TouchableOpacity>
+      {/* 상단 뒤로가기: SafeArea 바로 아래에서 16 내려오게 */}
+      <SafeAreaView>
+        <View style={styles.topBar}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <LeftIcon width={24} height={24} />
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -90,46 +93,67 @@ const RentalDetailScreen = () => {
           resizeMode="cover"
         />
 
-        {/* 상품 정보 */}
-        <View style={styles.infoContainer}>
-          <Text style={styles.title}>{product.title}</Text>
-          <Text style={styles.price}>{product.price}</Text>
-          <Text style={styles.location}>{product.location}</Text>
+        {/* 제품 정보 + 하트/공유 아이콘을 같은 행에 */}
+        <View style={styles.headerRow}>
+          <View style={styles.infoTexts}>
+            <Text style={styles.title}>{product.title}</Text>
+            <Text style={styles.price}>{product.price}</Text>
+            <Text style={styles.location}>{product.location}</Text>
+          </View>
+
+          <View style={styles.rightIcons}>
+            <HeartIcon width={24} height={24} />
+            <ShareIcon width={24} height={24} />
+          </View>
         </View>
 
-        {/* 좋아요 / 공유 */}
-        <View style={styles.iconRow}>
-          <HeartIcon width={24} height={24} />
-          <ShareIcon width={24} height={24} />
-        </View>
+        {/* --- 구분선 (제품 설명 위: 위쪽만 16, 아래 0) --- */}
+        <View style={styles.dividerTopProduct} />
 
-        {/* 제품 설명 */}
-        <View style={{ marginTop: 16 }}>
+        {/* 제품 설명: 좌우 패딩을 다른 섹션 타이틀과 동일(20)로 맞춤 */}
+        <View style={styles.productLabelBox}>
           <ProductLabel />
+          <TouchableOpacity
+            style={styles.productLabelUnder}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            onPress={() => console.log("제품 설명 접기/펼치기 아이콘 눌림")}
+          >
+            <UnderIcon width={18} height={18} />
+          </TouchableOpacity>
         </View>
+
+        {/* --- 구분선 (제품 설명 아래: 위쪽만 16, 아래 0) --- */}
+        <View style={styles.dividerBottomProduct} />
 
         {/* 리뷰 헤더 */}
-        <View style={styles.reviewHeader}>
+        <View style={[styles.rowBetween, styles.pad20, { marginBottom: 8 }]}>
           <View>
             <Text style={styles.sectionTitle}>리뷰 15</Text>
             <Text style={styles.subtitle}>82%가 만족한 상품입니다</Text>
           </View>
-          <Text style={styles.viewAll}>전체보기</Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            <Text style={styles.viewAll}>전체보기</Text>
+            <RightIcon width={14} height={14} />
+          </View>
         </View>
-
-        {/* 리뷰 가로 스크롤 카드들 (간단 버전) */}
+        
+        {/* 리뷰 카드 */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.reviewRow}
+          contentContainerStyle={styles.horizontalScroll}
         >
           {product.reviews.map((rv, i) => (
             <View key={i} style={styles.reviewCard}>
-              <Image source={product.image} style={styles.reviewThumb} resizeMode="cover" />
+              <Image
+                source={product.image}
+                style={styles.reviewThumb}
+                resizeMode="cover"
+              />
               <View style={styles.reviewRight}>
                 <View style={styles.reviewTitleRow}>
                   <Text style={styles.reviewTitleText}>{rv.title}</Text>
-                  <SmileIcon width={14} height={14} style={styles.reviewSmile} />
+                  <SmileIcon width={14} height={14} />
                 </View>
                 <Text style={styles.reviewCommentText} numberOfLines={2}>
                   {rv.comment}
@@ -139,34 +163,47 @@ const RentalDetailScreen = () => {
           ))}
         </ScrollView>
 
+        {/* --- 구분선 --- */}
+        <View style={styles.divider} />
+
         {/* 연관 추천 상품 */}
-        <View style={styles.relatedHeaderRow}>
+        <View style={[styles.pad20, { marginBottom: 12 }]}>
           <Text style={styles.sectionTitle}>연관 추천 상품</Text>
         </View>
 
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.relatedRow}
+          contentContainerStyle={styles.horizontalScroll}
         >
           {related.map((item) => (
             <View key={item.id} style={styles.relatedCard}>
               <View style={styles.relatedImageWrap}>
-                <Image source={item.image} style={styles.relatedImage} resizeMode="cover" />
+                <Image
+                  source={item.image}
+                  style={styles.relatedImage}
+                  resizeMode="cover"
+                />
+                {/* 투명한 화이트 배경 하트 */}
                 <View style={styles.relatedHeart}>
                   <HeartIcon width={16} height={16} />
                 </View>
               </View>
-
-              {/* 🔽 텍스트 영역은 ProductInfo를 그대로 사용 */}
               <View style={styles.relatedInfoWrap}>
-                <ProductInfo title={item.title} price={item.price} address={item.address} />
+                <ProductInfo
+                  title={item.title}
+                  price={item.price}
+                  address={item.address}
+                />
               </View>
             </View>
           ))}
         </ScrollView>
 
-        {/* 예약하기 버튼 */}
+        {/* --- 구분선 --- */}
+        <View style={styles.divider} />
+
+        {/* ✅ 예약하기 버튼: 페이지 맨 아래(스크롤 콘텐츠의 마지막) + 중앙 정렬 */}
         <View style={styles.buttonWrapper}>
           <Button
             text="예약하기"
@@ -175,8 +212,6 @@ const RentalDetailScreen = () => {
             disabled={false}
           />
         </View>
-
-        <View style={{ height: 24 }} />
       </ScrollView>
     </View>
   );
@@ -184,35 +219,63 @@ const RentalDetailScreen = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#FBFBFB" },
-  scrollContent: { paddingHorizontal: 20, paddingBottom: 120 },
 
-  // 상단 헤더 (뒤로가기 아이콘)
+  // SafeArea 바로 아래 여백 16
   topBar: {
-    marginTop: 17, // ✅ 추가: SafeAreaView 위쪽 여백
-    left: 16,
+    marginTop: 16,
     paddingHorizontal: 16,
     paddingVertical: 12,
     flexDirection: "row",
     alignItems: "center",
   },
 
+  scrollContent: { paddingBottom: 32 },
+
   mainImage: {
     width: "100%",
     height: 300,
     borderRadius: 10,
     marginTop: 10,
+    paddingHorizontal: 20, // 좌우 패딩(부모 여백 느낌)
   },
 
-  infoContainer: { marginTop: 20 },
+  // 제목/가격/위치 + 오른쪽 아이콘 한 줄
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    marginTop: 20,
+  },
+  infoTexts: { flexShrink: 1, paddingRight: 12 },
+  rightIcons: { flexDirection: "row", alignItems: "center", gap: 16 },
+
   title: { fontSize: 18, fontWeight: "600", marginBottom: 6, color: "#1b1b1b" },
-  price: { fontSize: 16, color: "#FF736D", marginBottom: 4, fontWeight: "600" },
+  price: { fontSize: 16, color: "#1B1B1B", marginBottom: 4, fontWeight: "600" },
   location: { fontSize: 14, color: "#666" },
 
-  iconRow: { flexDirection: "row", gap: 16, marginTop: 16 },
+  pad20: { paddingHorizontal: 20 },
+
+  // ProductLabel 오른쪽 Under 아이콘용 스타일
+  productLabelBox: {
+    paddingHorizontal: 20,   // 섹션들과 동일한 좌우 여백
+    paddingRight: 36,        // 아이콘과 텍스트가 겹치지 않게 살짝 여유
+    position: "relative",    // 절대배치 기준
+  },
+
+  productLabelUnder: {
+    position: "absolute",
+    right: 20,               // 우측 패딩선과 정렬
+    top: 13,                 // 제목 라인 상단에 맞춤 (필요시 2~4로 미세조정)
+    width: 18,
+    height: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1,
+  },
 
   sectionTitle: {
     fontSize: 16,
-    lineHeight: 18,
     fontWeight: "600",
     color: "#1b1b1b",
     marginBottom: 8,
@@ -220,15 +283,35 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: 12, color: "#5a5a5a" },
   viewAll: { fontSize: 12, color: "#5a5a5a" },
 
-  /* 리뷰 섹션 */
-  reviewHeader: {
-    marginTop: 20,
-    marginBottom: 8,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
+  rowBetween: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+
+  // 공용 구분선(다른 섹션용: 기존 유지)
+  divider: {
+    height: 1,
+    backgroundColor: "#e0e0e0",
+    marginVertical: 16,
+    marginHorizontal: 20,
   },
-  reviewRow: { paddingRight: 8 },
+
+  // ✅ 제품설명 위/아래만 별도 스타일
+  dividerTopProduct: {
+    height: 1,
+    backgroundColor: "#e0e0e0",
+    marginTop: 16,     // 위쪽만 16
+    marginBottom: 0,   // 아래 0
+    marginHorizontal: 20,
+  },
+  dividerBottomProduct: {
+    height: 1,
+    backgroundColor: "#e0e0e0",
+    marginTop: 5,      // ProductLabel과 간격 16 (필요시 16으로 조정)
+    marginBottom: 16,
+    marginHorizontal: 20,
+  },
+
+  horizontalScroll: { paddingLeft: 20, paddingRight: 8 },
+
+  /* 리뷰 카드 */
   reviewCard: {
     width: 248,
     height: 84,
@@ -242,15 +325,11 @@ const styles = StyleSheet.create({
   },
   reviewThumb: { width: 56, height: 56, borderRadius: 10, margin: 14 },
   reviewRight: { flex: 1, justifyContent: "center", paddingRight: 12 },
-  reviewTitleRow: { flexDirection: "row", alignItems: "center", marginBottom: 2, gap: 6 },
-  reviewSmile: { marginTop: -1 },
+  reviewTitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   reviewTitleText: { fontSize: 14, fontWeight: "600", color: "#1b1b1b" },
-  reviewStar: { fontSize: 12 },
   reviewCommentText: { fontSize: 12, color: "#5a5a5a" },
 
   /* 연관 추천 상품 */
-  relatedHeaderRow: { marginTop: 28, marginBottom: 12 },
-  relatedRow: { paddingRight: 8 },
   relatedCard: { width: 160, marginRight: 14 },
   relatedImageWrap: {
     width: 160,
@@ -274,8 +353,13 @@ const styles = StyleSheet.create({
   },
   relatedInfoWrap: { paddingTop: 8 },
 
-  /* 버튼 */
-  buttonWrapper: { marginTop: 30, marginBottom: 40 },
+  /* 예약 버튼: 중앙 정렬(컴포넌트 자체가 가로폭 갖고 있으면 가운데 배치됨) */
+  buttonWrapper: {
+    paddingHorizontal: 20,  // 좌우 여백 통일
+    alignItems: "center",    // 내부 자식(버튼) 중앙 정렬
+    marginBottom: 24,
+    width: "100%",           // 가로 폭 기준을 부모로 통일
+  },
 });
 
 export default RentalDetailScreen;

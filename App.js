@@ -1,27 +1,17 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// App.js
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import RentalDetailScreen from './screens/RentalDetailScreen';
 
-import MyPageScreen from "./screens/MyPageScreen";
-import RentalDetailScreen from "./screens/RentalDetailScreen";
-
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
-        <Tab.Screen
-          name="MyPage"
-          component={MyPageScreen}
-          options={{ title: "마이페이지" }}
-        />
-        <Tab.Screen
-          name="RentalDetail"
-          component={RentalDetailScreen}
-          options={{ title: "상품 상세" }}
-        />
-      </Tab.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="RentalDetail" component={RentalDetailScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
