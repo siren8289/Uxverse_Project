@@ -6,6 +6,7 @@ import TopBar_1 from "../src/components/TopBar_1";
 import Bar from "./components/Bar";
 import Personal from "./components/Personal";
 import IconLabel from "./components/IconLabel";
+import Nav from "../src/components/Nav";
 
 import DeliveryIcon from "./assets/Delivery.svg";
 import CouponIcon   from "./assets/Coupon.svg";
@@ -28,7 +29,7 @@ const Mypage = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 17 }}>
+      <View style={{ marginTop: 0 }}>
         <TopBar_1 />
       </View>
 
@@ -77,7 +78,7 @@ const Mypage = () => {
           <Personal title="커뮤니티" />
           <Personal title="문의/공지사항" />
         </View>
-
+        
         <View style={{ height: 24 }} />
       </ScrollView>
     </View>
