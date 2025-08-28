@@ -1,40 +1,35 @@
+// App.js
 import React from "react";
-import { View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-import GroupPurchase from "./pages/GroupPurchase";
-import CustomTabBar from "./src/components/Nav";
-
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
-
-function GroupPurchaseStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="GroupPurchaseMain" component={GroupPurchase} />
-    </Stack.Navigator>
-  );
-}
+import { SafeAreaView, ScrollView } from "react-native";
+import ListingCard from "./src/components/ListingCard"; // 경로 확인 필수
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{ headerShown: false }}
-        tabBar={(props) => (
-          <View style={{ marginBottom: 10}}>
-            {/* ✅ 여기 marginBottom 값으로 Nav 전체를 위로 올림 */}
-            <CustomTabBar {...props} />
-          </View>
-        )}
-      >
-        <Tab.Screen name="Home" component={GroupPurchaseStack} />
-        <Tab.Screen name="Search" component={GroupPurchaseStack} />
-        <Tab.Screen name="Like" component={GroupPurchaseStack} />
-        <Tab.Screen name="Mypage" component={GroupPurchaseStack} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <ListingCard
+          price="7,000원"
+          title="캠핑용 조명 랜턴"
+          location="서울 마포구"
+        />
+        <ListingCard
+          price="12,000원"
+          title="접이식 캠핑 체어"
+          location="부산 해운대구"
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#fff" },
+
+  navWrap: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
+    right: 0,
+    backgroundColor: "transparent",
+  },
+});
