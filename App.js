@@ -1,4 +1,4 @@
-// App.js (수정본)
+// App.js — 정리본 (중복 return/중복 App 선언 제거)
 import React from "react";
 import {
   NavigationContainer,
@@ -14,6 +14,14 @@ import MyPageScreen from "./pages/RentalSharingDetail/MyPageScreen";
 import CustomTabBar from "./pages/common_components/Nav";
 import PurchaseDetailScreen from "./pages/GroupPurchaseDetail/purchase_detail";
 import RentalDetailScreen from "./pages/RentalSharingDetail/RentalDetailScreen";
+
+import { makeServer } from "./src/mocks/server";
+import withQueryClient from "./src/app/QueryClient";
+
+// RootNavigator는 사용하지 않으므로 제거
+// import RootNavigator from "./src/navigation/RootNavigator";
+
+makeServer();
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -43,30 +51,30 @@ function HomeStackScreen() {
 }
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{ headerShown: false }}
-        tabBar={(props) => {
-          // 현재 활성 탭 (예: "Home")
-          const { state } = props;
-          const activeTab = state.routes[state.index];
+  console.log("✅ API URL:", process.env.EXPO_PUBLIC_API_URL);
 
-          // 활성 탭(Home)의 "하위 스택"에서 포커스된 라우트 이름
-          const focusedChild =
-            getFocusedRouteNameFromRoute(activeTab) ?? activeTab.name;
+  return withQueryClient({
+    children: (
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={{ headerShown: false }}
+          tabBar={(props) => {
+            const { state } = props;
+            const activeTab = state.routes[state.index];
+            const focusedChild =
+              getFocusedRouteNameFromRoute(activeTab) ?? activeTab.name;
 
-          // 상세일 때만 탭바 숨김
-          const HIDE_ON = ["GroupPurchaseDetail", "RentalSharingDetail"];
-          if (activeTab.name === "Home" && HIDE_ON.includes(focusedChild)) {
-            return null; // ← 탭바 자체 비표시
-          }
-          return <CustomTabBar {...props} />;
-        }}
-      >
-        <Tab.Screen name="Home" component={HomeStackScreen} />
-        <Tab.Screen name="Mypage" component={MyPageScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
+            const HIDE_ON = ["GroupPurchaseDetail", "RentalSharingDetail"];
+            if (activeTab.name === "Home" && HIDE_ON.includes(focusedChild)) {
+              return null;
+            }
+            return <CustomTabBar {...props} />;
+          }}
+        >
+          <Tab.Screen name="Home" component={HomeStackScreen} />
+          <Tab.Screen name="Mypage" component={MyPageScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    ),
+  });
 }

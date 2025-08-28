@@ -8,8 +8,15 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  ActivityIndicator,
+  RefreshControl,
+  Alert,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
+// ✅ API 훅 (src/screens → src/api 경로)
+import { useProductDetail, useToggleLike } from "../../src/api/products";
+import { useRentalDetail, useReserveRental } from "../../src/api/rentals";
 
 // 공통 UI
 import ButtonRegister from "../common_components/Button_Register";
@@ -26,35 +33,117 @@ import SmileIcon from "./assets/Smile.svg";
 import RightIcon from "./assets/Right.svg";
 import UnderIcon from "./assets/Under.svg";
 
-// 연관 추천 상품 이미지들
+// 연관 추천 상품 이미지들 (임시 더미 — 그대로 유지)
 import TableImage from "./assets/Table.png";
 import LightImage from "./assets/Light.png";
 import BurnerImage from "./assets/Burner.png";
 
-// ✅ 리뷰 썸네일 이미지
+// ✅ 리뷰 썸네일 이미지 (임시 더미 — 그대로 유지)
 import Tent1 from "./assets/Tent_1.png";
 import Tent2 from "./assets/Tent_2.png";
 
+/** 하단 버튼이 ScrollView 안에 있으므로,
+ *  가려지지 않도록 paddingBottom을 충분히 준다. */
+const FOOTER_PAD = 32;
+
 const RentalDetailScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
 
-  const product = {
-    title: "캠핑용 텐트 1~2인용",
-    price: "20,000원",
-    location: "서울시 관악구 신림역",
-    description:
-      "미니민 원터치 1~2인용 캠핑 텐트입니다. 가볍고 설치가 쉬워 초보자도 3분 이내 설치할 수 있어 간편하게 사용할 수 있습니다. 방수효과도 좋고 튼튼한 제품입니다.",
-    image: require("./assets/Card_product.png"), // ← 메인 이미지
-    reviews: [
-      {
-        title: "만족해요",
-        comment: "초보도 쉽게 사용할 수 있어요.",
-        image: Tent1,
-      }, // ✅ 첫 리뷰 = Tent_1
-      { title: "만족해요", comment: "튼튼하고 방수가 좋아요.", image: Tent2 }, // ✅ 마지막 리뷰 = Tent_2
-    ],
+  // ✅ 홈에서 넘어온 id로 상세 호출
+  const id = route?.params?.id;
+
+  // ✅ 공통 상품 정보(제목/가격/좋아요 등)
+  const {
+    data: product,
+    isLoading: loadingProduct,
+    isError: errorProduct,
+    refetch: refetchProduct,
+  } = useProductDetail(id);
+
+  // ✅ 렌탈 전용 정보(보증금/최소일/설명 등)
+  const {
+    data: rental,
+    isLoading: loadingRental,
+    isError: errorRental,
+    refetch: refetchRental,
+  } = useRentalDetail(id);
+
+  // ✅ 좋아요/예약 뮤테이션
+  const toggleLike = useToggleLike(id);
+  const reserve = useReserveRental(id);
+
+  const isLoading = loadingProduct || loadingRental;
+  const isError = errorProduct || errorRental;
+
+  // 새로고침 (당겨서 갱신)
+  const onRefresh = () => {
+    refetchProduct();
+    refetchRental();
   };
 
+  // 예약하기 (데모 값 — 실제로는 DatePicker 값 전달)
+  const handleReservation = () => {
+    reserve.mutate(
+      { dateFrom: "2025-09-01", dateTo: "2025-09-03", qty: 1 },
+      {
+        onSuccess: () => Alert.alert("예약 완료", "렌탈 예약이 완료되었어요."),
+        onError: () => Alert.alert("예약 실패", "잠시 후 다시 시도해 주세요."),
+      }
+    );
+  };
+
+  // 좋아요 토글
+  const handleToggleLike = () => {
+    toggleLike.mutate();
+  };
+
+  // 가격 포맷터 (숫자 → 12,345원)
+  const formatPrice = (v) => {
+    if (v == null) return "";
+    if (typeof v === "number") return `${v.toLocaleString()}원`;
+    // 문자열일 수도 있으니 숫자 변환 시도
+    const n = Number(v);
+    return Number.isNaN(n) ? String(v) : `${n.toLocaleString()}원`;
+  };
+
+  // ── 로딩/에러 처리 ───────────────────────────────────────
+  if (isLoading) {
+    return (
+      <View
+        style={[
+          styles.container,
+          { alignItems: "center", justifyContent: "center" },
+        ]}
+      >
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  if (isError || !product || !rental) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.scrollContent,
+            { paddingBottom: FOOTER_PAD },
+          ]}
+          refreshControl={
+            <RefreshControl refreshing={false} onRefresh={onRefresh} />
+          }
+        >
+          <View style={{ padding: 20 }}>
+            <Text>
+              데이터를 불러오지 못했어요. 아래로 끌어당겨 새로고침 해주세요.
+            </Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  // ── 정상 화면 ────────────────────────────────────────────
   const related = [
     {
       id: "table",
@@ -79,12 +168,25 @@ const RentalDetailScreen = () => {
     },
   ];
 
-  const handleReservation = () => {
-    console.log("예약하기 버튼 클릭");
-  };
+  const reviews = [
+    {
+      title: "만족해요",
+      comment: "초보도 쉽게 사용할 수 있어요.",
+      image: Tent1,
+    },
+    { title: "만족해요", comment: "튼튼하고 방수가 좋아요.", image: Tent2 },
+  ];
+
+  // 메인 이미지: API 썸네일(thumb or imageUrl) -> 없으면 로컬 샘플
+  const mainImageSource = product?.thumb
+    ? { uri: product.thumb }
+    : product?.imageUrl
+    ? { uri: product.imageUrl }
+    : require("./assets/Card_product.png");
 
   return (
     <View style={styles.container}>
+      {/* 상단 안전영역 + 뒤로가기 */}
       <SafeAreaView>
         <View style={styles.topBar}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -93,11 +195,19 @@ const RentalDetailScreen = () => {
         </View>
       </SafeAreaView>
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* ✅ 메인 이미지 좌우 여백 20 */}
+      <ScrollView
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingBottom: FOOTER_PAD },
+        ]}
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={onRefresh} />
+        }
+      >
+        {/* 메인 이미지 */}
         <View style={styles.mainImageWrap}>
           <Image
-            source={product.image}
+            source={mainImageSource}
             style={styles.mainImage}
             resizeMode="cover"
           />
@@ -106,12 +216,20 @@ const RentalDetailScreen = () => {
         {/* 제품 정보 + 하트/공유 */}
         <View style={styles.headerRow}>
           <View style={styles.infoTexts}>
-            <Text style={styles.title}>{product.title}</Text>
-            <Text style={styles.price}>{product.price}</Text>
-            <Text style={styles.location}>{product.location}</Text>
+            <Text style={styles.title}>{product?.title}</Text>
+            <Text style={styles.price}>{formatPrice(product?.price)}</Text>
+            {/* 위치 정보는 아직 API에 없으면 숨김 */}
+            {!!rental?.location && (
+              <Text style={styles.location}>{rental.location}</Text>
+            )}
           </View>
           <View style={styles.rightIcons}>
-            <HeartIcon width={24} height={24} />
+            <TouchableOpacity
+              onPress={handleToggleLike}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <HeartIcon width={24} height={24} />
+            </TouchableOpacity>
             <ShareIcon width={16} height={18} />
           </View>
         </View>
@@ -121,7 +239,10 @@ const RentalDetailScreen = () => {
 
         {/* 제품 설명 */}
         <View style={styles.productLabelBox}>
-          <ProductLabel />
+          <ProductLabel
+            // 내부에서 children 받는 구조면 수정 필요
+            text={rental?.description ?? ""}
+          />
           <TouchableOpacity
             style={styles.productLabelUnder}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
@@ -146,22 +267,20 @@ const RentalDetailScreen = () => {
           </View>
         </View>
 
-        {/* 리뷰 카드 */}
+        {/* 리뷰 카드 (임시 더미) */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.horizontalScroll}
         >
-          {product.reviews.map((rv, i) => (
+          {reviews.map((rv, i) => (
             <View key={i} style={styles.reviewCard}>
               <Image
                 source={rv.image}
                 style={styles.reviewThumb}
                 resizeMode="cover"
               />
-              {/* ✅ 변경: rv.image */}
               <View style={styles.reviewRight}>
-                {/* ✅ Frame498처럼: 한 컨테이너에서 wrap + 간격 제어 */}
                 <View style={styles.reviewWrap}>
                   <Text style={styles.reviewTitleText}>{rv.title}</Text>
                   <SmileIcon width={14} height={14} />
@@ -177,7 +296,7 @@ const RentalDetailScreen = () => {
         {/* --- 구분선 --- */}
         <View style={styles.divider} />
 
-        {/* 연관 추천 상품 */}
+        {/* 연관 추천 상품 (임시 더미) */}
         <View style={[styles.pad20, { marginBottom: 12 }]}>
           <Text style={styles.sectionTitle}>연관 추천 상품</Text>
         </View>
@@ -195,7 +314,6 @@ const RentalDetailScreen = () => {
                   style={styles.relatedImage}
                   resizeMode="cover"
                 />
-                {/* 배경 없는 하트 아이콘만 노출 */}
                 <TouchableOpacity
                   style={styles.iconOverlay}
                   hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
@@ -223,10 +341,10 @@ const RentalDetailScreen = () => {
         {/* 예약 버튼 */}
         <View style={styles.buttonWrapper}>
           <ButtonRegister
-            text="예약하기"
+            text={reserve.isPending ? "예약 중..." : "예약하기"}
             onPress={handleReservation}
-            isLoading={false}
-            disabled={false}
+            isLoading={reserve.isPending}
+            disabled={reserve.isPending}
           />
         </View>
       </ScrollView>
@@ -245,9 +363,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  scrollContent: { paddingBottom: 32 },
+  // ✅ 하단 버튼이 가리지 않게 충분한 여백
+  scrollContent: { paddingBottom: FOOTER_PAD },
 
-  /* ✅ 메인 이미지 좌우 여백 20 */
+  /* 메인 이미지 좌우 여백 20 */
   mainImageWrap: { paddingHorizontal: 20 },
   mainImage: {
     width: "100%",
@@ -356,23 +475,20 @@ const styles = StyleSheet.create({
 
   reviewRight: { flex: 1, justifyContent: "center", paddingRight: 12 },
 
-  /* ✅ Frame498 스타일 반영: 제목+아이콘 1행, 코멘트 다음행 / 간격 제어 */
+  /* 제목+아이콘 1행, 코멘트 다음행 / 간격 제어 */
   reviewWrap: {
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
     alignContent: "flex-start",
-    rowGap: 8, // ← 제목행과 코멘트 사이 간격 8
-    columnGap: 2, // ← 제목과 아이콘 사이 간격 2
+    rowGap: 8,
+    columnGap: 2,
   },
   reviewTitleText: { fontSize: 14, fontWeight: "500", color: "#1b1b1b" },
   reviewCommentText: { fontSize: 12, fontWeight: "500", color: "#5a5a5a" },
 
   /* 연관 추천 상품 */
-  relatedCard: {
-    width: 140,
-    marginRight: 5,
-  },
+  relatedCard: { width: 140, marginRight: 5 },
   relatedImageWrap: {
     width: 120,
     height: 120,
@@ -400,7 +516,7 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     paddingHorizontal: 20,
     alignItems: "center",
-    marginBottom: -30,
+    marginBottom: -30, // 기존 디자인 유지(필요하면 0~16으로 완화 권장)
     width: "100%",
   },
 });

@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   groupFlexBox: {
-    columnGap: 2,
+    columnGap: 3,
     rowGap: Gap.gap_8,
     alignContent: "flex-start",
     flexWrap: "wrap",
