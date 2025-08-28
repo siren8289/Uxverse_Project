@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
-import Line26 from "../../assets/line-26.svg";
-import Frame3 from "../../assets/frame3.svg";
-import Arrowicon2 from "../../assets/arrow-icon2.svg";
-import UnionBg from "../../assets/Union.png";
+import Line26 from "../assets/line-26.svg";
+import Frame3 from "../assets/frame3.svg";
+import Arrowicon2 from "../assets/arrow-icon2.svg";
+import UnionBg from "../assets/Union.png";
 
 const Color = {
   colorSalmon: "#FF7F7F",

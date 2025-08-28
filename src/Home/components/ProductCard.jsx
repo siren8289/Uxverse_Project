@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
@@ -41,6 +42,8 @@ function ProductCard({
   discount = 0,
   showDiscount = true,
   showHeart = true,
+
+  /** 상위에서 내려주는 onPress (필수) */
   onPress = () => {},
 
   /** 레이아웃(부모에서 통일해 주입) */
@@ -52,7 +55,6 @@ function ProductCard({
 
   const IMG = imageSize ?? cardWidth;
   const H = cardHeight ?? Math.ceil(IMG + IMAGE_TEXT_GAP + INFO_H); // 기본 188
-
   const src =
     typeof imageSource === "string" ? { uri: imageSource } : imageSource;
 
@@ -67,6 +69,11 @@ function ProductCard({
     <Pressable
       style={[s.card, { width: cardWidth, height: H }]}
       onPress={onPress}
+      android_ripple={{ radius: 80 }}
+      hitSlop={8}
+      accessibilityRole="button"
+      accessibilityLabel={`${title}, 가격 ${priceStr}`}
+      testID="product-card"
     >
       {/* 이미지: 폭=부모 100%, 높이=IMG, 라운드=10, 하단여백=12 */}
       <View
@@ -76,15 +83,18 @@ function ProductCard({
         ]}
       >
         {SvgComponent ? (
+          // ✅ SVG가 부모 터치를 가로채지 않도록
           <SvgComponent
             width="100%"
             height="100%"
             preserveAspectRatio="xMidYMid slice"
+            pointerEvents="none"
           />
         ) : src ? (
+          // (Image는 기본적으로 부모 터치를 막지 않지만, 안전하게 wrapper에서 처리)
           <Image source={src} style={s.image} resizeMode="cover" />
         ) : (
-          <View style={[s.image, s.placeholder]}>
+          <View style={[s.image, s.placeholder]} pointerEvents="none">
             <Text style={s.placeholderText}>이미지 없음</Text>
           </View>
         )}
@@ -93,7 +103,9 @@ function ProductCard({
           <TouchableOpacity
             style={s.heart}
             onPress={() => setLiked((v) => !v)}
-            hitSlop={8}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            accessibilityRole="button"
+            accessibilityLabel={liked ? "좋아요 취소" : "좋아요"}
           >
             <HeartOutline size={22} color="#1B1B1B" strokeWidth={1} />
           </TouchableOpacity>
@@ -131,6 +143,16 @@ const s = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: "#fff",
     overflow: "hidden",
+    // 터치 대상이 너무 얇지 않도록(특히 Android)
+    paddingBottom: 0,
+    ...Platform.select({
+      android: { elevation: 0.5 },
+      ios: {
+        shadowColor: "rgba(0,0,0,0.06)",
+        shadowOpacity: 1,
+        shadowRadius: 2,
+      },
+    }),
   },
   imageWrap: {
     position: "relative",

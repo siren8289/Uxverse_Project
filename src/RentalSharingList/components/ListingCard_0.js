@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";   // ✅ 추가
+import { Feather } from "@expo/vector-icons"; // ✅ 추가
 import BookmarkIcon from "../assets/Frame_0.svg";
 import FilledBookmarkIcon from "../assets/Heart_0.svg";
 

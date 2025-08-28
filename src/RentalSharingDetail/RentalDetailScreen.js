@@ -12,7 +12,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 // 공통 UI
-import Button from "../src/components/Button_Register";
+import ButtonRegister from "../common_components/Button_Register";
+
 // 화면 내부 전용 컴포넌트
 import ProductLabel from "./components/ProductDescription";
 import ProductInfo from "./components/ProductInfo";
@@ -20,7 +21,7 @@ import ProductInfo from "./components/ProductInfo";
 // SVG
 import HeartIcon from "./assets/Heart_icon.svg";
 import ShareIcon from "./assets/Share_icon.svg";
-import LeftIcon from "../src/components/assets/Left.svg";
+import LeftIcon from "../common_components/assets/Left.svg";
 import SmileIcon from "./assets/Smile.svg";
 import RightIcon from "./assets/Right.svg";
 import UnderIcon from "./assets/Under.svg";
@@ -45,15 +46,37 @@ const RentalDetailScreen = () => {
       "미니민 원터치 1~2인용 캠핑 텐트입니다. 가볍고 설치가 쉬워 초보자도 3분 이내 설치할 수 있어 간편하게 사용할 수 있습니다. 방수효과도 좋고 튼튼한 제품입니다.",
     image: require("./assets/Card_product.png"), // ← 메인 이미지
     reviews: [
-      { title: "만족해요", comment: "초보도 쉽게 사용할 수 있어요.", image: Tent1 }, // ✅ 첫 리뷰 = Tent_1
-      { title: "만족해요", comment: "튼튼하고 방수가 좋아요.", image: Tent2 },       // ✅ 마지막 리뷰 = Tent_2
+      {
+        title: "만족해요",
+        comment: "초보도 쉽게 사용할 수 있어요.",
+        image: Tent1,
+      }, // ✅ 첫 리뷰 = Tent_1
+      { title: "만족해요", comment: "튼튼하고 방수가 좋아요.", image: Tent2 }, // ✅ 마지막 리뷰 = Tent_2
     ],
   };
 
   const related = [
-    { id: "table",  image: TableImage,  title: "캠핑용 테이블",    price: "8,500원", address: "서울시 관악구 · 30분 전" },
-    { id: "light",  image: LightImage,  title: "캠핑용 조명 렌턴", price: "7,000원", address: "서울시 관악구 · 1시간 전" },
-    { id: "burner", image: BurnerImage, title: "캠핑용 버너",      price: "9,000원", address: "서울시 관악구 · 2시간 전" },
+    {
+      id: "table",
+      image: TableImage,
+      title: "캠핑용 테이블",
+      price: "8,500원",
+      address: "서울시 관악구 · 30분 전",
+    },
+    {
+      id: "light",
+      image: LightImage,
+      title: "캠핑용 조명 렌턴",
+      price: "7,000원",
+      address: "서울시 관악구 · 1시간 전",
+    },
+    {
+      id: "burner",
+      image: BurnerImage,
+      title: "캠핑용 버너",
+      price: "9,000원",
+      address: "서울시 관악구 · 2시간 전",
+    },
   ];
 
   const handleReservation = () => {
@@ -73,7 +96,11 @@ const RentalDetailScreen = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* ✅ 메인 이미지 좌우 여백 20 */}
         <View style={styles.mainImageWrap}>
-          <Image source={product.image} style={styles.mainImage} resizeMode="cover" />
+          <Image
+            source={product.image}
+            style={styles.mainImage}
+            resizeMode="cover"
+          />
         </View>
 
         {/* 제품 정보 + 하트/공유 */}
@@ -120,10 +147,19 @@ const RentalDetailScreen = () => {
         </View>
 
         {/* 리뷰 카드 */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScroll}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalScroll}
+        >
           {product.reviews.map((rv, i) => (
             <View key={i} style={styles.reviewCard}>
-              <Image source={rv.image} style={styles.reviewThumb} resizeMode="cover" />{/* ✅ 변경: rv.image */}
+              <Image
+                source={rv.image}
+                style={styles.reviewThumb}
+                resizeMode="cover"
+              />
+              {/* ✅ 변경: rv.image */}
               <View style={styles.reviewRight}>
                 {/* ✅ Frame498처럼: 한 컨테이너에서 wrap + 간격 제어 */}
                 <View style={styles.reviewWrap}>
@@ -146,13 +182,24 @@ const RentalDetailScreen = () => {
           <Text style={styles.sectionTitle}>연관 추천 상품</Text>
         </View>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScroll}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalScroll}
+        >
           {related.map((item) => (
             <View key={item.id} style={styles.relatedCard}>
               <View style={styles.relatedImageWrap}>
-                <Image source={item.image} style={styles.relatedImage} resizeMode="cover" />
+                <Image
+                  source={item.image}
+                  style={styles.relatedImage}
+                  resizeMode="cover"
+                />
                 {/* 배경 없는 하트 아이콘만 노출 */}
-                <TouchableOpacity style={styles.iconOverlay} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                <TouchableOpacity
+                  style={styles.iconOverlay}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                >
                   <HeartIcon width={18} height={18} />
                 </TouchableOpacity>
               </View>
@@ -175,7 +222,12 @@ const RentalDetailScreen = () => {
 
         {/* 예약 버튼 */}
         <View style={styles.buttonWrapper}>
-          <Button text="예약하기" onPress={handleReservation} isLoading={false} disabled={false} />
+          <ButtonRegister
+            text="예약하기"
+            onPress={handleReservation}
+            isLoading={false}
+            disabled={false}
+          />
         </View>
       </ScrollView>
     </View>
@@ -222,7 +274,11 @@ const styles = StyleSheet.create({
   pad20: { paddingHorizontal: 20 },
 
   // ProductLabel 아이콘
-  productLabelBox: { paddingHorizontal: 20, paddingRight: 36, position: "relative" },
+  productLabelBox: {
+    paddingHorizontal: 20,
+    paddingRight: 36,
+    position: "relative",
+  },
   productLabelUnder: {
     position: "absolute",
     right: 20,
@@ -234,16 +290,54 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
 
-  sectionTitle: { fontSize: 16, fontWeight: "500", color: "#1b1b1b", marginBottom: 8 },
-  subtitle: { fontSize: 12, fontWeight: "500", color: "#5a5a5a", marginBottom: 0 },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#1b1b1b",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 12,
+    fontWeight: "500",
+    color: "#5a5a5a",
+    marginBottom: 0,
+  },
   viewAll: { fontSize: 12, color: "#5a5a5a", fontWeight: "500" },
-  rowBetween: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start",  },
+  rowBetween: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
 
   // 구분선
-  divider: { height: 1, backgroundColor: "#e0e0e0",marginTop: 16, marginBottom: 22, marginHorizontal: 20 },
-  dividerTopProduct: { height: 1, backgroundColor: "#e0e0e0", marginTop: 24, marginBottom: 16, marginHorizontal: 20 },
-  dividerBottomProduct: { height: 1, backgroundColor: "#e0e0e0", marginTop: 16, marginBottom: 16, marginHorizontal: 20 },
-  dividerTopReservation: { height: 1, backgroundColor: "#e0e0e0", marginTop: 24, marginBottom: -34, marginHorizontal: 20},
+  divider: {
+    height: 1,
+    backgroundColor: "#e0e0e0",
+    marginTop: 16,
+    marginBottom: 22,
+    marginHorizontal: 20,
+  },
+  dividerTopProduct: {
+    height: 1,
+    backgroundColor: "#e0e0e0",
+    marginTop: 24,
+    marginBottom: 16,
+    marginHorizontal: 20,
+  },
+  dividerBottomProduct: {
+    height: 1,
+    backgroundColor: "#e0e0e0",
+    marginTop: 16,
+    marginBottom: 16,
+    marginHorizontal: 20,
+  },
+  dividerTopReservation: {
+    height: 1,
+    backgroundColor: "#e0e0e0",
+    marginTop: 24,
+    marginBottom: -34,
+    marginHorizontal: 20,
+  },
   horizontalScroll: { paddingLeft: 20, paddingRight: 8 },
 
   /* 리뷰 카드 */
@@ -268,14 +362,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     alignContent: "flex-start",
-    rowGap: 8,     // ← 제목행과 코멘트 사이 간격 8
-    columnGap: 2,  // ← 제목과 아이콘 사이 간격 2
+    rowGap: 8, // ← 제목행과 코멘트 사이 간격 8
+    columnGap: 2, // ← 제목과 아이콘 사이 간격 2
   },
   reviewTitleText: { fontSize: 14, fontWeight: "500", color: "#1b1b1b" },
   reviewCommentText: { fontSize: 12, fontWeight: "500", color: "#5a5a5a" },
 
   /* 연관 추천 상품 */
-  relatedCard: { 
+  relatedCard: {
     width: 140,
     marginRight: 5,
   },

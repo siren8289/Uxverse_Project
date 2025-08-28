@@ -9,20 +9,22 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { Color, FontSize } from "./GlobalStyles";
-import PopularIcon from "../assets/Popular.svg"; // ✅ SVG 임포트
-// ✅ 이미지
-import MangoImg from "../assets/mango.png";
-import KimchiImg from "../assets/kimchijeon.png";
-import GajiImg from "../assets/gaji.png";
-import GamjaImg from "../assets/potato.png";
-import SalmonImg from "../assets/salmon.png";
-import BibimbabImg from "../assets/bibimbab.png";
+import PopularIcon from "./assets/Popular.svg";
+// 이미지
+import MangoImg from "./assets/mango.png";
+import KimchiImg from "./assets/kimchijeon.png";
+import GajiImg from "./assets/gaji.png";
+import GamjaImg from "./assets/potato.png";
+import SalmonImg from "./assets/salmon.png";
+import BibimbabImg from "./assets/bibimbab.png";
 
 const GroupPurchase = () => {
   const [category, setCategory] = useState("food");
   const [likedItems, setLikedItems] = useState({});
+  const navigation = useNavigation();
 
   /** 카테고리 */
   const categories = useMemo(
@@ -35,7 +37,6 @@ const GroupPurchase = () => {
     ],
     []
   );
-
 
   /** 상품 데이터 */
   const PRODUCTS = useMemo(
@@ -96,7 +97,13 @@ const GroupPurchase = () => {
   const renderItem = ({ item }) => {
     const liked = likedItems[item.id];
     return (
-      <View style={styles.card}>
+      <TouchableOpacity
+        style={styles.card}
+        activeOpacity={0.8}
+        onPress={() =>
+          navigation.navigate("GroupPurchaseDetail", { product: item })
+        }
+      >
         <Image source={item.image} style={styles.cardImg} resizeMode="cover" />
         <View style={styles.cardInfo}>
           <Text style={styles.discount}>{item.discount}</Text>
@@ -104,6 +111,7 @@ const GroupPurchase = () => {
         </View>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.remain}>{item.remain}</Text>
+
         <TouchableOpacity
           style={styles.heartIcon}
           onPress={() =>
@@ -113,29 +121,28 @@ const GroupPurchase = () => {
           <Feather
             name="heart"
             size={20}
-            color={liked ? "#FA8072" : "#292E38"} // ✅ 수정 (#292E38)
+            color={liked ? "#FA8072" : "#292E38"}
           />
         </TouchableOpacity>
-
-      </View>
+      </TouchableOpacity>
     );
   };
 
   /** 카테고리 버튼 */
   const renderCategory = (cat) => {
     const isSelected = category === cat.id;
-
     return (
       <TouchableOpacity
         key={cat.id}
         style={[
           styles.categoryButton,
-          isSelected && cat.type === "outlined" && styles.categorySelectedOutlined,
+          isSelected &&
+            cat.type === "outlined" &&
+            styles.categorySelectedOutlined,
           isSelected && cat.type === "filled" && styles.categorySelectedFilled,
         ]}
         onPress={() => setCategory(cat.id)}
       >
-        {/* ✅ "인기순" 아이콘 */}
         {cat.icon && (
           <cat.icon
             width={12}
@@ -147,7 +154,9 @@ const GroupPurchase = () => {
         <Text
           style={[
             styles.categoryText,
-            isSelected && cat.type === "outlined" && styles.categoryTextOutlined,
+            isSelected &&
+              cat.type === "outlined" &&
+              styles.categoryTextOutlined,
             isSelected && cat.type === "filled" && styles.categoryTextFilled,
           ]}
         >
@@ -157,25 +166,42 @@ const GroupPurchase = () => {
     );
   };
 
-
-  return (
-    <SafeAreaView style={styles.container}>
+  /** ✅ (1) 헤더: 상단바 + 카테고리 */
+  const Header = () => (
+    <>
       {/* 상단바 */}
       <View style={styles.topBarWrapper}>
-        <Feather name="chevron-left" size={24} color={Color.colorGray200} />
-        <Text style={styles.topBarTitle}>공동구매</Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Feather name="chevron-left" size={24} color={Color.colorGray200} />
+        </TouchableOpacity>
+
+        <Text style={styles.topBarTitle} pointerEvents="none">
+          공동구매
+        </Text>
+
         <View style={styles.rightIconWrap}>
-          <Feather
-            name="search"
-            size={22}
-            color={Color.colorGray200}
-            style={{ marginRight: 14 }}
-          />
-          <Feather name="shopping-cart" size={22} color={Color.colorGray200} />
+          <TouchableOpacity onPress={() => {}}>
+            <Feather
+              name="search"
+              size={22}
+              color={Color.colorGray200}
+              style={{ marginRight: 14 }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {}}>
+            <Feather
+              name="shopping-cart"
+              size={22}
+              color={Color.colorGray200}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
-      {/* 카테고리 */}
+      {/* 카테고리 (가로 스크롤) */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -183,34 +209,32 @@ const GroupPurchase = () => {
       >
         {categories.map(renderCategory)}
       </ScrollView>
+    </>
+  );
 
-      {/* 상품 리스트 */}
+  return (
+    <SafeAreaView style={styles.container}>
+      {/* ✅ (2) FlatList가 화면 전체 스크롤 담당 */}
       <FlatList
+        style={{ flex: 1 }}
         data={PRODUCTS}
         keyExtractor={(it) => it.id}
         renderItem={renderItem}
         numColumns={2}
         columnWrapperStyle={{ gap: 14 }}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-          paddingBottom: 160,
-          rowGap: 20,
-        }}
-        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={Header} // ← 상단바+카테고리도 스크롤 포함
+        ListFooterComponent={<View style={{ height: 160 }} />} // ← 하단 여유(기존 paddingBottom 대체)
+        contentContainerStyle={{ paddingHorizontal: 20, rowGap: 20 }}
+        showsVerticalScrollIndicator={true}
       />
 
-
-
-      {/* 제안하기 버튼 */}
+      {/* 고정 플로팅 버튼 */}
       <View style={styles.fabWrap} pointerEvents="box-none">
         <TouchableOpacity style={styles.fabButton}>
           <Text style={styles.plusIcon}>＋</Text>
           <Text style={styles.fabText}>제안하기</Text>
         </TouchableOpacity>
       </View>
-
-
-
     </SafeAreaView>
   );
 };
@@ -218,15 +242,15 @@ const GroupPurchase = () => {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
 
-  // ✅ 상태바 아래 17px 간격
+  // 상태바 아래 17px 간격
   topBarWrapper: {
-    marginTop: 17,  // 상태바와 상단바 사이 17px
+    marginTop: 0,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
+    paddingHorizontal: 0,
     height: 44,
-    marginBottom: 16, // ✅ 공동구매 라인과 카테고리 라인 사이 16px
+    marginBottom: 8,
   },
   rightIconWrap: { flexDirection: "row", alignItems: "center" },
   topBarTitle: {
@@ -241,10 +265,10 @@ const styles = StyleSheet.create({
 
   categoryRow: {
     flexDirection: "row",
-    paddingHorizontal: 20,
-    gap: 16,          // 버튼 간격
-    paddingVertical: 6,
-    marginBottom: 24, // 카테고리 ↔ 리스트
+    paddingHorizontal: 0,
+    gap: 16,
+    paddingVertical: 0,
+    marginBottom: 0,
   },
   categoryButton: {
     flexDirection: "row",
@@ -264,8 +288,6 @@ const styles = StyleSheet.create({
   categoryTextOutlined: { color: "#FA8072" },
   categoryTextFilled: { color: "#FFF" },
 
-
-
   card: {
     flex: 1,
     backgroundColor: "#fff",
@@ -274,8 +296,8 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   cardImg: {
-    width: 170,   // ✅ 고정 가로 170px
-    height: 170,  // ✅ 고정 세로 170px
+    width: 170,
+    height: 170,
     borderRadius: 10,
   },
 
@@ -304,7 +326,7 @@ const styles = StyleSheet.create({
   },
   heartIcon: { position: "absolute", top: 8, right: 8 },
 
-  fabWrap: { position: "absolute", right: 20, bottom: 20 },
+  fabWrap: { position: "absolute", right: 20, bottom: 110 },
   fabButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -314,16 +336,8 @@ const styles = StyleSheet.create({
     height: 46,
     borderRadius: 23,
   },
-  plusIcon: {
-    fontSize: 24,
-    color: "#fff",
-    marginRight: 6,
-  },
-  fabText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "600",
-  },
+  plusIcon: { fontSize: 24, color: "#fff", marginRight: 6 },
+  fabText: { color: "#fff", fontSize: 18, fontWeight: "600" },
 });
 
 export default GroupPurchase;

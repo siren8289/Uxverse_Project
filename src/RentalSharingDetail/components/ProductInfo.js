@@ -28,16 +28,17 @@ const ProductInfo = ({
   containerStyle,
 }) => {
   const valid = ["title", "price", "address"];
-  const seq = (Array.isArray(order) ? order : ["title", "price", "address"]).filter(
-    (k) => valid.includes(k)
-  );
+  const seq = (
+    Array.isArray(order) ? order : ["title", "price", "address"]
+  ).filter((k) => valid.includes(k));
 
   // 촘촘/보통 모드 라인하이트와 간격
   const LH = compact
-    ? { title: 19, price: 21, address: 15, gap: 4 }  // fontSize보다 +2~3
+    ? { title: 19, price: 21, address: 15, gap: 4 } // fontSize보다 +2~3
     : { title: 22, price: 24, address: 18, gap: 8 };
 
-  const androidTrim = Platform.OS === "android" ? { includeFontPadding: false } : null;
+  const androidTrim =
+    Platform.OS === "android" ? { includeFontPadding: false } : null;
 
   const parts = {
     title: (

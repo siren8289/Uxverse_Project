@@ -27,7 +27,7 @@ const TopLogo = () => {
 
 const styles = StyleSheet.create({
   topLogo: {
-    height: 56,
+    height: 36,
     backgroundColor: "#ffffff",
     justifyContent: "center",
   },

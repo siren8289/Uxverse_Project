@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import IconEllipse from "../../assets/ellipse-172.svg";
-import IconCheck from "../../assets/Vector.svg";   // ✅ 체크 아이콘 (경로 주의)
-import IconCheck2 from "../../assets/vector1.svg";
-import IconCheck3 from "../../assets/vector2.svg";
+import IconEllipse from "../assets/ellipse-172.svg";
+import IconCheck from "../assets/Vector.svg"; // ✅ 체크 아이콘 (경로 주의)
+import IconCheck2 from "../assets/vector1.svg";
+import IconCheck3 from "../assets/vector2.svg";
 
 const TradeRow = () => {
   return (
@@ -76,7 +76,7 @@ const s = StyleSheet.create({
   },
   iconCheck: {
     position: "absolute",
-    zIndex: 2,             // Ellipse 위로
+    zIndex: 2, // Ellipse 위로
     // 중앙 정렬 (10x10 기준)
     top: 4,
     left: 4,

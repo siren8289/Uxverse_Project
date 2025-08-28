@@ -1,7 +1,17 @@
-// screens/HomeScreen.js
+// src/Home/HomeScreen.js
 import React, { useMemo } from "react";
-import { ScrollView, StyleSheet, View, FlatList } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  FlatList,
+  Dimensions,
+} from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 
 import TopLogo from "./components/Top_logo";
 import HomeImage from "./components/Home_image";
@@ -17,20 +27,22 @@ import R1 from "./assets/r1.svg";
 import R2 from "./assets/r2.svg";
 import R3 from "./assets/r3.svg";
 
-/** 공통 간격 */
-const SPACING = 22; // 섹션/좌우 여백
+const { height: SCREEN_H } = Dimensions.get("window");
+
+/** ─── 레이아웃 토큰 ───────────────────────────────────────── */
+const SPACING = 20;
 const MARGIN = SPACING;
 const GUTTER = SPACING;
 
-/** 카드/리스트 토큰 (피그마 스펙 반영) */
-const CARD_W = 119.36; // 카드 폭(=이미지 폭)
+const CARD_W = 119.36;
 const IMAGE_TEXT_GAP = 12;
 const TEXT_H = 56;
-const CARD_H = Math.ceil(CARD_W + IMAGE_TEXT_GAP + TEXT_H); // = 188
-const CARD_GAP = 24; // 카드 사이 간격
+const CARD_H = Math.ceil(CARD_W + IMAGE_TEXT_GAP + TEXT_H); // 188
+const CARD_GAP = 24;
 const SNAP = CARD_W + CARD_GAP;
 const PEEK = MARGIN;
 
+/** ─── 더미 데이터 ─────────────────────────────────────────── */
 const GROUPBUY = [
   {
     id: "g1",
@@ -79,12 +91,14 @@ const RENTAL = [
 ];
 
 export default function HomeScreen() {
+  const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
+
   const getItemLayout = useMemo(
     () => (_d, i) => ({ length: SNAP, offset: SNAP * i, index: i }),
     []
   );
 
-  // ✅ 공동구매: 퍼센트 표시 + 'n명 남음' 문구
   const renderGroupCard = ({ item }) => (
     <View style={{ width: CARD_W }}>
       <ProductCard
@@ -97,11 +111,19 @@ export default function HomeScreen() {
             ? `${item.left}명 남음`
             : "위치 정보 없음"
         }
+        onPress={() =>
+          navigation.navigate("GroupPurchaseDetail", {
+            id: item.id,
+            title: item.title,
+            price: item.price,
+            discount: item.discount,
+            left: item.left,
+          })
+        }
       />
     </View>
   );
 
-  // ✅ 렌탈: 퍼센트 숨김 (문구는 기본값 유지)
   const renderRentalCard = ({ item }) => (
     <View style={{ width: CARD_W }}>
       <ProductCard
@@ -109,22 +131,48 @@ export default function HomeScreen() {
         cardWidth={CARD_W}
         imageSize={CARD_W}
         showDiscount={false}
+        onPress={() =>
+          navigation.navigate("RentalSharingDetail", {
+            id: item.id,
+            title: item.title,
+            price: item.price,
+            discount: item.discount,
+          })
+        }
       />
     </View>
   );
 
   return (
-    <SafeAreaView edges={["top"]} style={styles.container}>
+    <SafeAreaView edges={["top", "bottom"]} style={styles.container}>
       <ScrollView
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
+        style={{ flex: 1 }}
+        contentContainerStyle={[
+          styles.content,
+          {
+            // ✅ 스크롤이 항상 가능하도록(콘텐츠가 짧아도)
+            minHeight: SCREEN_H - insets.top - insets.bottom + 1,
+            paddingBottom: insets.bottom + 120, // 하단 여유 넉넉히
+          },
+        ]}
+        showsVerticalScrollIndicator={true} // ✅ 스크롤바 보이기
+        scrollEventThrottle={16}
       >
         <TopLogo />
-        <HomeImage />
-        <Search />
 
-        {/* 공동구매 */}
-        <Bar title="공동구매 추천" />
+        {/* ⚠️ HomeImage가 배경형이면 내부에서 absolute일 때
+            부모 레이어를 덮지 않도록 pointerEvents 조정 필요 */}
+        <HomeImage />
+
+        {/* 🔍 Search + Bar 묶음 */}
+        <View style={{ gap: 8 /* 원하는 값 */ }}>
+          <Search />
+          <Bar
+            title="공동구매 추천"
+            onPress={() => navigation.navigate("GroupPurchaseList")}
+          />
+        </View>
+
         <FlatList
           horizontal
           style={{ height: CARD_H }}
@@ -142,8 +190,11 @@ export default function HomeScreen() {
           getItemLayout={getItemLayout}
         />
 
-        {/* 렌탈공유 */}
-        <Bar title="렌탈공유 추천" />
+        <Bar
+          title="렌탈공유 추천"
+          onPress={() => navigation.navigate("RentalSharingList")}
+        />
+
         <FlatList
           horizontal
           style={{ height: CARD_H }}
@@ -161,7 +212,7 @@ export default function HomeScreen() {
           getItemLayout={getItemLayout}
         />
 
-        <Bar title="커뮤니티 인기글" />
+        <Bar title="커뮤니티 인기글" onPress={() => {}} />
         <Community />
       </ScrollView>
     </SafeAreaView>
@@ -172,8 +223,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#ffffff" },
   content: {
     paddingHorizontal: MARGIN,
-    paddingTop: GUTTER,
-    paddingBottom: 100,
+    paddingTop: 20,
     gap: GUTTER,
+    // paddingBottom는 런타임에서 insets로 보강
   },
 });

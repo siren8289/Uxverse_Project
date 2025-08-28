@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8, // RN 0.71+ OK (구버전이면 대신 marginRight)
+    gap: 20, // RN 0.71+ OK (구버전이면 대신 marginRight)
   },
   placeholder: {
     fontSize: 14,
