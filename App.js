@@ -1,25 +1,22 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-// 스크린들
-import HomeScreen from "./src/screens/HomeScreen";
-
-// 탭바 (Nav.js: 커스텀 탭바)
-import Nav from "./src/components/Nav";
-
-const Tab = createBottomTabNavigator();
+import { SafeAreaView, ScrollView } from "react-native";
+import ListingCard from "./src/components/ListingCard"; // 경로 확인 필수
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{ headerShown: false }}
-        tabBar={(props) => <Nav {...props} />} // ✅ 커스텀 탭바 연결
-      >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        {/* 다른 탭들 추가 가능 */}
-      </Tab.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <ListingCard
+          price="7,000원"
+          title="캠핑용 조명 랜턴"
+          location="서울 마포구"
+        />
+        <ListingCard
+          price="12,000원"
+          title="접이식 캠핑 체어"
+          location="부산 해운대구"
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
