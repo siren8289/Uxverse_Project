@@ -1,4 +1,4 @@
-// src/screens/RentalDetailScreen.js
+// pages/RentalSharingDetail/RentalDetailScreen.js
 import React from "react";
 import {
   View,
@@ -14,18 +14,13 @@ import {
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-// ✅ API 훅 (src/screens → src/api 경로)
-// pages/RentalSharingDetail/RentalDetailScreen.js
 import { useProductDetail, useToggleLike } from "../../src/api/products";
 import { useRentalDetail, useReserveRental } from "../../src/api/rentals";
-// 공통 UI
-import ButtonRegister from "../common_components/Button_Register";
 
-// 화면 내부 전용 컴포넌트
+import ButtonRegister from "../common_components/Button_Register";
 import ProductLabel from "./components/ProductDescription";
 import ProductInfo from "./components/ProductInfo";
 
-// SVG
 import HeartIcon from "./assets/Heart_icon.svg";
 import ShareIcon from "./assets/Share_icon.svg";
 import LeftIcon from "../common_components/assets/Left.svg";
@@ -33,27 +28,30 @@ import SmileIcon from "./assets/Smile.svg";
 import RightIcon from "./assets/Right.svg";
 import UnderIcon from "./assets/Under.svg";
 
-// 연관 추천 상품 이미지들 (임시 더미 — 그대로 유지)
 import TableImage from "./assets/Table.png";
 import LightImage from "./assets/Light.png";
 import BurnerImage from "./assets/Burner.png";
+import PlaceholderImg from "./assets/Table.png";
 
-// ✅ 리뷰 썸네일 이미지 (임시 더미 — 그대로 유지)
 import Tent1 from "./assets/Tent_1.png";
 import Tent2 from "./assets/Tent_2.png";
 
-/** 하단 버튼이 ScrollView 안에 있으므로,
- *  가려지지 않도록 paddingBottom을 충분히 준다. */
 const FOOTER_PAD = 32;
 
-const RentalDetailScreen = () => {
+export default function RentalDetailScreen() {
   const navigation = useNavigation();
   const route = useRoute();
 
-  // ✅ 홈에서 넘어온 id로 상세 호출
-  const id = route?.params?.id;
+  // 파라미터
+  const params = route?.params ?? {};
+  const passedProduct = params.product ?? null;
+  const id = params.id ?? passedProduct?.id ?? null;
 
-  // ✅ 공통 상품 정보(제목/가격/좋아요 등)
+  // id 전혀 없을 때: 훅 호출 전에 리턴하면 또 순서가 달라지므로
+  // 아래처럼 훅 호출은 그대로 두고, 화면 리턴만 뒤에서 처리
+  const noId = !id;
+
+  // 데이터 훅
   const {
     data: product,
     isLoading: loadingProduct,
@@ -61,7 +59,6 @@ const RentalDetailScreen = () => {
     refetch: refetchProduct,
   } = useProductDetail(id);
 
-  // ✅ 렌탈 전용 정보(보증금/최소일/설명 등)
   const {
     data: rental,
     isLoading: loadingRental,
@@ -69,20 +66,61 @@ const RentalDetailScreen = () => {
     refetch: refetchRental,
   } = useRentalDetail(id);
 
-  // ✅ 좋아요/예약 뮤테이션
   const toggleLike = useToggleLike(id);
   const reserve = useReserveRental(id);
 
-  const isLoading = loadingProduct || loadingRental;
-  const isError = errorProduct || errorRental;
+  // ---- 🟢 모든 훅 호출은 여기까지 (리턴 분기보다 위) ----
 
-  // 새로고침 (당겨서 갱신)
+  // 폴백 + 이미지 보존 병합 (항상 호출되는 훅)
+  const mergedProduct = React.useMemo(() => {
+    const p = product ?? {};
+    const pp = passedProduct ?? {};
+    return {
+      ...pp,
+      ...p,
+      image: p.image ?? pp.image ?? pp.imageSource,
+      imageSource: p.imageSource ?? pp.imageSource ?? pp.image,
+      thumb:
+        typeof p.thumb === "string" && p.thumb.trim()
+          ? p.thumb
+          : typeof p.imageUrl === "string" && p.imageUrl.trim()
+          ? p.imageUrl
+          : typeof pp.thumb === "string" && pp.thumb.trim()
+          ? pp.thumb
+          : typeof pp.imageUrl === "string" && pp.imageUrl.trim()
+          ? pp.imageUrl
+          : undefined,
+      imageUrl:
+        typeof p.imageUrl === "string" && p.imageUrl.trim()
+          ? p.imageUrl
+          : typeof p.thumb === "string" && p.thumb.trim()
+          ? p.thumb
+          : typeof pp.imageUrl === "string" && pp.imageUrl.trim()
+          ? pp.imageUrl
+          : typeof pp.thumb === "string" && pp.thumb.trim()
+          ? pp.thumb
+          : undefined,
+    };
+  }, [product, passedProduct]);
+
+  const mainImageSource = (() => {
+    const p = mergedProduct ?? {};
+    if (p.image) return p.image;
+    if (p.imageSource) return p.imageSource;
+    if (typeof p.thumb === "string" && p.thumb.trim()) return { uri: p.thumb };
+    if (typeof p.imageUrl === "string" && p.imageUrl.trim())
+      return { uri: p.imageUrl };
+    return PlaceholderImg;
+  })();
+
+  const isLoading = (loadingProduct || loadingRental) && !mergedProduct;
+  const isTotalError = (errorProduct || errorRental) && !mergedProduct;
+
   const onRefresh = () => {
-    refetchProduct();
-    refetchRental();
+    refetchProduct?.();
+    refetchRental?.();
   };
 
-  // 예약하기 (데모 값 — 실제로는 DatePicker 값 전달)
   const handleReservation = () => {
     reserve.mutate(
       { dateFrom: "2025-09-01", dateTo: "2025-09-03", qty: 1 },
@@ -93,21 +131,33 @@ const RentalDetailScreen = () => {
     );
   };
 
-  // 좋아요 토글
-  const handleToggleLike = () => {
-    toggleLike.mutate();
-  };
+  const handleToggleLike = () => toggleLike.mutate();
 
-  // 가격 포맷터 (숫자 → 12,345원)
   const formatPrice = (v) => {
     if (v == null) return "";
     if (typeof v === "number") return `${v.toLocaleString()}원`;
-    // 문자열일 수도 있으니 숫자 변환 시도
     const n = Number(v);
     return Number.isNaN(n) ? String(v) : `${n.toLocaleString()}원`;
   };
 
-  // ── 로딩/에러 처리 ───────────────────────────────────────
+  // ---- 화면 리턴 분기 (훅 호출 이후) ----
+  if (noId) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.scrollContent,
+            { paddingBottom: FOOTER_PAD },
+          ]}
+        >
+          <View style={{ padding: 20 }}>
+            <Text>잘못된 접근입니다. 항목 ID가 없습니다.</Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
   if (isLoading) {
     return (
       <View
@@ -121,7 +171,7 @@ const RentalDetailScreen = () => {
     );
   }
 
-  if (isError || !product || !rental) {
+  if (isTotalError) {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView
@@ -143,7 +193,6 @@ const RentalDetailScreen = () => {
     );
   }
 
-  // ── 정상 화면 ────────────────────────────────────────────
   const related = [
     {
       id: "table",
@@ -177,16 +226,8 @@ const RentalDetailScreen = () => {
     { title: "만족해요", comment: "튼튼하고 방수가 좋아요.", image: Tent2 },
   ];
 
-  // 메인 이미지: API 썸네일(thumb or imageUrl) -> 없으면 로컬 샘플
-  const mainImageSource = product?.thumb
-    ? { uri: product.thumb }
-    : product?.imageUrl
-    ? { uri: product.imageUrl }
-    : require("./assets/Card_product.png");
-
   return (
     <View style={styles.container}>
-      {/* 상단 안전영역 + 뒤로가기 */}
       <SafeAreaView>
         <View style={styles.topBar}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -213,12 +254,15 @@ const RentalDetailScreen = () => {
           />
         </View>
 
-        {/* 제품 정보 + 하트/공유 */}
+        {/* 제품 정보 */}
         <View style={styles.headerRow}>
           <View style={styles.infoTexts}>
-            <Text style={styles.title}>{product?.title}</Text>
-            <Text style={styles.price}>{formatPrice(product?.price)}</Text>
-            {/* 위치 정보는 아직 API에 없으면 숨김 */}
+            <Text style={styles.title}>
+              {mergedProduct?.title ?? "제목 없음"}
+            </Text>
+            <Text style={styles.price}>
+              {formatPrice(mergedProduct?.price)}
+            </Text>
             {!!rental?.location && (
               <Text style={styles.location}>{rental.location}</Text>
             )}
@@ -234,28 +278,17 @@ const RentalDetailScreen = () => {
           </View>
         </View>
 
-        {/* --- 구분선 (제품 설명 위) --- */}
-        <View style={styles.dividerTopProduct} />
-
         {/* 제품 설명 */}
+        <View style={styles.dividerTopProduct} />
         <View style={styles.productLabelBox}>
-          <ProductLabel
-            // 내부에서 children 받는 구조면 수정 필요
-            text={rental?.description ?? ""}
-          />
-          <TouchableOpacity
-            style={styles.productLabelUnder}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            onPress={() => console.log("제품 설명 접기/펼치기 아이콘 눌림")}
-          >
+          <ProductLabel text={rental?.description ?? ""} />
+          <TouchableOpacity style={styles.productLabelUnder}>
             <UnderIcon width={18} height={18} />
           </TouchableOpacity>
         </View>
-
-        {/* --- 구분선 (제품 설명 아래) --- */}
         <View style={styles.dividerBottomProduct} />
 
-        {/* 리뷰 헤더 */}
+        {/* 리뷰 */}
         <View style={[styles.rowBetween, styles.pad20, { marginBottom: 16 }]}>
           <View>
             <Text style={styles.sectionTitle}>리뷰 15</Text>
@@ -267,7 +300,6 @@ const RentalDetailScreen = () => {
           </View>
         </View>
 
-        {/* 리뷰 카드 (임시 더미) */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -293,10 +325,7 @@ const RentalDetailScreen = () => {
           ))}
         </ScrollView>
 
-        {/* --- 구분선 --- */}
-        <View style={styles.divider} />
-
-        {/* 연관 추천 상품 (임시 더미) */}
+        {/* 연관 추천 상품 */}
         <View style={[styles.pad20, { marginBottom: 12 }]}>
           <Text style={styles.sectionTitle}>연관 추천 상품</Text>
         </View>
@@ -314,14 +343,10 @@ const RentalDetailScreen = () => {
                   style={styles.relatedImage}
                   resizeMode="cover"
                 />
-                <TouchableOpacity
-                  style={styles.iconOverlay}
-                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                >
+                <TouchableOpacity style={styles.iconOverlay}>
                   <HeartIcon width={18} height={18} />
                 </TouchableOpacity>
               </View>
-
               <View style={styles.relatedInfoWrap}>
                 <ProductInfo
                   title={item.title}
@@ -335,10 +360,8 @@ const RentalDetailScreen = () => {
           ))}
         </ScrollView>
 
-        {/* --- 구분선 --- */}
-        <View style={styles.dividerTopReservation} />
-
         {/* 예약 버튼 */}
+        <View style={styles.dividerTopReservation} />
         <View style={styles.buttonWrapper}>
           <ButtonRegister
             text={reserve.isPending ? "예약 중..." : "예약하기"}
@@ -350,11 +373,10 @@ const RentalDetailScreen = () => {
       </ScrollView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#FBFBFB" },
-
   topBar: {
     marginTop: 16,
     paddingHorizontal: 16,
@@ -362,20 +384,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-
-  // ✅ 하단 버튼이 가리지 않게 충분한 여백
   scrollContent: { paddingBottom: FOOTER_PAD },
-
-  /* 메인 이미지 좌우 여백 20 */
   mainImageWrap: { paddingHorizontal: 20 },
-  mainImage: {
-    width: "100%",
-    height: 300,
-    borderRadius: 10,
-    marginTop: 10,
-  },
-
-  // 제목/가격/위치 + 오른쪽 아이콘
+  mainImage: { width: "100%", height: 300, borderRadius: 10, marginTop: 10 },
   headerRow: {
     flexDirection: "row",
     alignItems: "flex-start",
@@ -385,81 +396,49 @@ const styles = StyleSheet.create({
   },
   infoTexts: { flexShrink: 1, paddingRight: 12 },
   rightIcons: { flexDirection: "row", alignItems: "center", gap: 16 },
-
   title: { fontSize: 18, fontWeight: "600", marginBottom: 6, color: "#1b1b1b" },
   price: { fontSize: 16, color: "#1B1B1B", marginBottom: 4, fontWeight: "600" },
   location: { fontSize: 14, color: "#666" },
-
   pad20: { paddingHorizontal: 20 },
-
-  // ProductLabel 아이콘
   productLabelBox: {
     paddingHorizontal: 20,
     paddingRight: 36,
     position: "relative",
   },
-  productLabelUnder: {
-    position: "absolute",
-    right: 20,
-    top: 0,
-    width: 18,
-    height: 18,
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1,
-  },
-
+  productLabelUnder: { position: "absolute", right: 20, top: 0 },
   sectionTitle: {
     fontSize: 16,
     fontWeight: "500",
     color: "#1b1b1b",
     marginBottom: 8,
   },
-  subtitle: {
-    fontSize: 12,
-    fontWeight: "500",
-    color: "#5a5a5a",
-    marginBottom: 0,
-  },
-  viewAll: { fontSize: 12, color: "#5a5a5a", fontWeight: "500" },
+  subtitle: { fontSize: 12, color: "#5a5a5a" },
+  viewAll: { fontSize: 12, color: "#5a5a5a" },
   rowBetween: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
-
-  // 구분선
-  divider: {
-    height: 1,
-    backgroundColor: "#e0e0e0",
-    marginTop: 16,
-    marginBottom: 22,
-    marginHorizontal: 20,
-  },
+  divider: { height: 1, backgroundColor: "#e0e0e0", margin: 20 },
   dividerTopProduct: {
     height: 1,
     backgroundColor: "#e0e0e0",
-    marginTop: 24,
-    marginBottom: 16,
     marginHorizontal: 20,
+    marginTop: 24,
   },
   dividerBottomProduct: {
     height: 1,
     backgroundColor: "#e0e0e0",
-    marginTop: 16,
-    marginBottom: 16,
     marginHorizontal: 20,
+    marginVertical: 16,
   },
   dividerTopReservation: {
     height: 1,
     backgroundColor: "#e0e0e0",
-    marginTop: 24,
-    marginBottom: -34,
     marginHorizontal: 20,
+    marginTop: 24,
   },
   horizontalScroll: { paddingLeft: 20, paddingRight: 8 },
-
-  /* 리뷰 카드 */
   reviewCard: {
     width: 248,
     height: 84,
@@ -472,10 +451,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   reviewThumb: { width: 56, height: 56, borderRadius: 10, margin: 14 },
-
   reviewRight: { flex: 1, justifyContent: "center", paddingRight: 12 },
-
-  /* 제목+아이콘 1행, 코멘트 다음행 / 간격 제어 */
   reviewWrap: {
     width: "100%",
     flexDirection: "row",
@@ -485,9 +461,7 @@ const styles = StyleSheet.create({
     columnGap: 2,
   },
   reviewTitleText: { fontSize: 14, fontWeight: "500", color: "#1b1b1b" },
-  reviewCommentText: { fontSize: 12, fontWeight: "500", color: "#5a5a5a" },
-
-  /* 연관 추천 상품 */
+  reviewCommentText: { fontSize: 12, color: "#5a5a5a" },
   relatedCard: { width: 140, marginRight: 5 },
   relatedImageWrap: {
     width: 120,
@@ -498,27 +472,12 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   relatedImage: { width: "100%", height: "100%" },
-
-  // 배경 없는 하트 오버레이
-  iconOverlay: {
-    position: "absolute",
-    right: 12.3,
-    top: 12,
-    width: 18,
-    height: 18,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
+  iconOverlay: { position: "absolute", right: 12, top: 12 },
   relatedInfoWrap: { paddingTop: 8 },
-
-  /* 예약 버튼 */
   buttonWrapper: {
     paddingHorizontal: 20,
     alignItems: "center",
-    marginBottom: -30, // 기존 디자인 유지(필요하면 0~16으로 완화 권장)
+    marginBottom: -30,
     width: "100%",
   },
 });
-
-export default RentalDetailScreen;
