@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { Color, FontSize } from "./GlobalStyles";
 import PopularIcon from "./assets/Popular.svg";
+
 // 이미지
 import MangoImg from "./assets/mango.png";
 import KimchiImg from "./assets/kimchijeon.png";
@@ -21,7 +22,7 @@ import GamjaImg from "./assets/potato.png";
 import SalmonImg from "./assets/salmon.png";
 import BibimbabImg from "./assets/bibimbab.png";
 
-const GroupPurchase = () => {
+export default function GroupPurchase() {
   const [category, setCategory] = useState("food");
   const [likedItems, setLikedItems] = useState({});
   const navigation = useNavigation();
@@ -99,21 +100,27 @@ const GroupPurchase = () => {
     return (
       <TouchableOpacity
         style={styles.card}
-        activeOpacity={0.8}
+        activeOpacity={0.85}
         onPress={() =>
-          navigation.navigate("GroupPurchaseDetail", { product: item })
+          navigation.navigate("GroupPurchaseDetail", {
+            id: item.id, // ✅ 상세가 기대하는 id 전달
+            product: item, // ✅ 필요하면 상세에서 프리렌더에 사용
+          })
         }
       >
         <Image source={item.image} style={styles.cardImg} resizeMode="cover" />
+
         <View style={styles.cardInfo}>
           <Text style={styles.discount}>{item.discount}</Text>
           <Text style={styles.price}>{item.price}</Text>
         </View>
+
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.remain}>{item.remain}</Text>
 
         <TouchableOpacity
           style={styles.heartIcon}
+          hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
           onPress={() =>
             setLikedItems((prev) => ({ ...prev, [item.id]: !liked }))
           }
@@ -166,10 +173,9 @@ const GroupPurchase = () => {
     );
   };
 
-  /** ✅ (1) 헤더: 상단바 + 카테고리 */
+  /** 헤더: 상단바 + 카테고리 */
   const Header = () => (
     <>
-      {/* 상단바 */}
       <View style={styles.topBarWrapper}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -201,7 +207,6 @@ const GroupPurchase = () => {
         </View>
       </View>
 
-      {/* 카테고리 (가로 스크롤) */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -214,35 +219,34 @@ const GroupPurchase = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* ✅ (2) FlatList가 화면 전체 스크롤 담당 */}
       <FlatList
-        style={{ flex: 1 }}
+        style={{ flex: 1, zIndex: 1 }}
         data={PRODUCTS}
         keyExtractor={(it) => it.id}
         renderItem={renderItem}
         numColumns={2}
         columnWrapperStyle={{ gap: 14 }}
-        ListHeaderComponent={Header} // ← 상단바+카테고리도 스크롤 포함
-        ListFooterComponent={<View style={{ height: 160 }} />} // ← 하단 여유(기존 paddingBottom 대체)
+        ListHeaderComponent={Header}
+        // 하단 여유로 탭바/FAB와 겹침 방지
+        ListFooterComponent={<View style={{ height: 160 }} />}
         contentContainerStyle={{ paddingHorizontal: 20, rowGap: 20 }}
-        showsVerticalScrollIndicator={true}
+        showsVerticalScrollIndicator
       />
 
       {/* 고정 플로팅 버튼 */}
       <View style={styles.fabWrap} pointerEvents="box-none">
-        <TouchableOpacity style={styles.fabButton}>
+        <TouchableOpacity style={styles.fabButton} onPress={() => {}}>
           <Text style={styles.plusIcon}>＋</Text>
           <Text style={styles.fabText}>제안하기</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
 
-  // 상태바 아래 17px 간격
   topBarWrapper: {
     marginTop: 0,
     flexDirection: "row",
@@ -295,11 +299,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     position: "relative",
   },
-  cardImg: {
-    width: 170,
-    height: 170,
-    borderRadius: 10,
-  },
+  cardImg: { width: 170, height: 170, borderRadius: 10 },
 
   cardInfo: {
     flexDirection: "row",
@@ -324,6 +324,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginBottom: 8,
   },
+
   heartIcon: { position: "absolute", top: 8, right: 8 },
 
   fabWrap: { position: "absolute", right: 20, bottom: 110 },
@@ -339,5 +340,3 @@ const styles = StyleSheet.create({
   plusIcon: { fontSize: 24, color: "#fff", marginRight: 6 },
   fabText: { color: "#fff", fontSize: 18, fontWeight: "600" },
 });
-
-export default GroupPurchase;

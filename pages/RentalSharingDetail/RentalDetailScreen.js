@@ -15,9 +15,9 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 // ✅ API 훅 (src/screens → src/api 경로)
+// pages/RentalSharingDetail/RentalDetailScreen.js
 import { useProductDetail, useToggleLike } from "../../src/api/products";
 import { useRentalDetail, useReserveRental } from "../../src/api/rentals";
-
 // 공통 UI
 import ButtonRegister from "../common_components/Button_Register";
 
